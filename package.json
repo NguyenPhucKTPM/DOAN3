@@ -1,0 +1,41 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "backend Nodejs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --exec babel-node --inspect src/index.js"
+  },
+  "author": "NguyenNhamPhuc 2000378",
+  "license": "ISC",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.4.2",
+    "body-parser": "^1.20.2",
+    "bootstrap": "^5.3.1",
+    "connect-redis": "^7.1.0",
+    "dotenv": "^16.3.1",
+    "ejs": "3.1.9",
+    "express": "4.18.1",
+    "font-awesome": "^4.7.0",
+    "mysql2": "^3.6.1",
+    "nodemon": "^3.0.1",
+    "express-session": "^1.17.3",
+    "bcrypt": "^5.1.1",
+    "redis": "^4.6.10"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.22.15",
+    "@babel/core": "^7.22.17",
+    "@babel/node": "^7.22.15",
+    "@babel/preset-env": "^7.22.15"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NguyenPhucKTPM/DOAN3.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NguyenPhucKTPM/DOAN3/issues"
+  },
+  "homepage": "https://github.com/NguyenPhucKTPM/DOAN3#readme"
+}

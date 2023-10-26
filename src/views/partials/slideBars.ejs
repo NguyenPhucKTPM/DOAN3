@@ -1,0 +1,87 @@
+<nav id="sidebar">
+    <div class="p-4 pt-5">
+      <a href="#" class="img logo rounded-circle mb-5" style="background-image: url(image/quocngu.jpg);"></a>
+<ul class="list-unstyled components mb-5">
+  <!-- <li class="">
+    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+        <i class="fa fa-line-chart" aria-hidden="true"></i> Thống kê
+    </a>
+    <ul class="collapse list-unstyled" id="homeSubmenu">
+    <li>
+        <a href="#">Home 1</a>
+    </li>
+    <li>
+        <a href="#">Home 2</a>
+    </li>
+    <li>
+        <a href="#">Home 3</a>
+    </li>
+    </ul>
+  </li> -->
+  <li class="<%= (data.getUrl === '/list-user' || data.getUrl === '/create-new-user') ? 'active' : '' %>">
+    <a href="#user" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+        <i class="fa fa-users" aria-hidden="true"></i> Quản lí người dùng
+    </a>
+    <ul class="collapse list-unstyled" id="user">
+    <li>
+        <a href="/list-user">Danh sách người dùng</a>
+    </li>
+    <li>
+        <a href="/create-new-user">Thêm mới người dùng</a>
+    </li>
+    </ul>
+  </li>
+  <li class="<%= (data.getUrl === '/create-new-category' || data.getUrl === '/list-category' || data.getUrl === '/insert-category') ? 'active' : '' %>">
+    <a href="#category" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+        <i class="fa fa-tag" aria-hidden="true"></i> Quản lí danh mục
+    </a>
+    <ul class="collapse list-unstyled" id="category">
+    <li>
+        <a href="/list-category">Danh sách danh mục</a>
+    </li>
+    <li>
+        <a href="/create-new-category">Thêm danh mục</a>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <li>
+    <a href="#product" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+        <i class="fa fa-mobile" aria-hidden="true"></i> Quản lí sản phẩm
+    </a>
+    <ul class="collapse list-unstyled" id="product">
+    <li>
+        <a href="/list-product">Danh sách sản phẩm</a>
+    </li>
+    <li>
+        <a href="/create-new-product">Thêm sản phẩm</a>
+    </li>
+    </ul>
+  </li>
+  <!-- <li>
+    <a href="#bill" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+        <i class="fa fa-money" aria-hidden="true"></i> Quản lí đơn hàng
+    </a>
+    <ul class="collapse list-unstyled" id="bill">
+    <li>
+        <a href="#">Home 1</a>
+    </li>
+    <li>
+        <a href="#">Home 2</a>
+    </li>
+    <li>
+        <a href="#">Home 3</a>
+    </li>
+    </ul>
+  </li> -->
+  <li>
+</ul>
+
+<div class="footer">
+    <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib.com</a>
+    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+</div>
+
+</div>
+</nav>

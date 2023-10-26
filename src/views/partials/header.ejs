@@ -1,0 +1,134 @@
+<section class="ftco-section">
+  <div class="wrap">
+    <div class="container">
+      <div class="row justify-content-between">
+        <div class="col">
+          <p class="mb-0 phone">
+            <span class="fa fa-phone"></span> <a href="#">+00 1234 567</a>
+          </p>
+        </div>
+        <div class="col d-flex justify-content-end">
+          <div class="social-media">
+            <p class="mb-0 d-flex">
+              <a
+                href="#"
+                class="d-flex align-items-center justify-content-center"
+                ><span class="fab fa-facebook"
+                  ><i class="sr-only">Facebook</i></span
+                ></a
+              >
+              <a
+                href="#"
+                class="d-flex align-items-center justify-content-center"
+                ><span class="fab fa-twitter"
+                  ><i class="sr-only">Twitter</i></span
+                ></a
+              >
+              <a
+                href="#"
+                class="d-flex align-items-center justify-content-center"
+                ><span class="fab fa-instagram"
+                  ><i class="sr-only">Instagram</i></span
+                ></a
+              >
+              <a
+                href="#"
+                class="d-flex align-items-center justify-content-center"
+                ><span class="fab fa-dribbble"
+                  ><i class="sr-only">Dribbble</i></span
+                ></a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav
+    class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light"
+    id="ftco-navbar"
+  >
+    <div class="container">
+      <a class="navbar-brand" href="/">Smart <span>PhoneStore</span></a>
+      <form action="#" class="searchform order-sm-start order-lg-last">
+        <div class="form-group d-flex">
+          <input
+            type="text"
+            class="form-control pl-3"
+            placeholder="Tìm kiếm..."
+          />
+          <button type="submit" placeholder="" class="form-control search">
+            <span class="fa fa-search"></span>
+          </button>
+        </div>
+      </form>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#ftco-nav"
+        aria-controls="ftco-nav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="fa fa-bars"></span> Menu
+      </button>
+      <div class="collapse navbar-collapse" id="ftco-nav">
+        <ul class="navbar-nav m-auto">
+          <li class="nav-item <%= data.getUrl === '/' ? 'active' : '' %>">
+            <a href="/" class="nav-link">Trang chủ</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="dropdown04"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              >Danh Mục sản phẩm</a
+            >
+            <div class="dropdown-menu" aria-labelledby="dropdown04">
+              <% categories.forEach(function(category) { %>
+                <a class="dropdown-item" href="/phone/<%=category.tenDanhMuc + "/" + category.idDanhMuc %>"><%= category.tenDanhMuc %></a>
+              <% }) %>
+              <!-- <a class="dropdown-item" href="#">Page 1</a>
+              <a class="dropdown-item" href="#">Page 2</a>
+              <a class="dropdown-item" href="#">Page 3</a>
+              <a class="dropdown-item" href="#">Page 4</a> -->
+            </div>
+          </li>
+          <!-- <li class="nav-item"><a href="/about" class="nav-link">About</a></li> -->
+          <% if(!locals?.user) { %>
+          <li class="nav-item <%= data.getUrl === '/login' ? 'active' : '' %>">
+            <a href="/login" class="nav-link">Đăng nhập</a>
+          </li>
+          <li
+            class="nav-item <%= data.getUrl === '/register' ? 'active' : '' %>"
+          >
+            <a href="/register" class="nav-link">Đăng kí</a>
+          </li>
+          <% } else { %>
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link"
+              >Xin chào <%= locals?.user?.fullName %></a
+            >
+            <div class="dropdown-menu" aria-labelledby="dropdown04">
+              <a class="dropdown-item" href="/detail-user"
+                >Xem chi tiết người dùng <%= locals?.user?.fullName %>
+              </a>
+              <a class="dropdown-item" href="/change-info"
+                >Cập nhật thông tin</a
+              >
+              <a class="dropdown-item" href="/change-pass">Đổi mật khẩu</a>
+              <a class="dropdown-item" href="/logout">Đăng xuất</a>
+            </div>
+          </li>
+          <% } %>
+          <li class="nav-item"><a href="#" class="nav-link">Giỏ Hàng</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- END nav -->
+</section>

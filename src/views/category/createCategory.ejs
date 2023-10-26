@@ -1,0 +1,14 @@
+<div class="container w-50">
+    <form action="/insert-category" method="POST">
+        <div class="mb-3 mt-3">
+            <label for="category" class="form-label">Nhập tên danh mục:</label>
+            <input type="text" id="category" class="form-control" vla  name="tenDanhMuc">
+        </div>  
+        <div class="mb-3 mt-3">
+            <span class="text-danger"><%= data.error ? data.error : '' %></span>
+            <span class="text-primary"><%= data.noti ? data.noti : '' %></span>
+        </div>
+        
+        <button type="submit" style="background-color: #ffc107;" class="btn text-light">Thêm</button>
+    </form>
+</div>

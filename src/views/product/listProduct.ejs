@@ -1,0 +1,49 @@
+<style>
+    table.table thead th {
+        background-color: #f8b739;
+        color: white;
+    }
+</style>
+<body>
+    <div class="container-fluid1 table-responsive py-5">
+        <table class="table table-bordered table-hover">
+            <thead class=" thead-danger">
+              <tr>
+                <th scope="col">STT</th>
+                <th scope="col">Tên danh mục</th>
+                <th scope="col">Tên sản phẩm</th>
+                <th scope="col">Hình ảnh</th>
+                <th scope="col">Giá</th>
+                <th scope="col">Khuyến mãi</th>
+                <th scope="col">Cấu hình</th>
+              </tr>
+            </thead>
+            <tbody>
+            <% for(let i=0;i<data.rows.length;i++) { %>
+              <tr>
+                <td scope="row"><%= i+1 %></td>
+                <th><%= data.rows[i].tenDanhMuc %></th>
+                <th><%= data.rows[i].tenSanPham %></th>
+                <th class="text-center"><img src="/image/product/<%= data.rows[i].hinhAnh %>" width="100" height="100" class="img-fluid"></th>
+                <td><%= data.rows[i].gia.toLocaleString('vi-VN') + " VNĐ" %></td>
+                <th><%= data.rows[i].khuyenMai + '%' %></th>
+                <th>
+                    <div class="d-flex justify-content-evenly">
+                        <a href="/detail-product/<%= data.rows[i].idSanPham %>" class="text-black">
+                            <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
+                        </a>
+                        <a href="/edit-product/<%= data.rows[i].idSanPham %>"class="text-warning">
+                            <i class="fa fa-pencil-square fa-lg" aria-hidden="true"></i>
+                        </a>
+                        <a href="/delete-product/<%= data.rows[i].idSanPham %>"class="text-danger">
+                            <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </th>
+              </tr>
+            <% } %>
+            </tbody>
+        </table>
+    </div>
+
+    

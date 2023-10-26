@@ -1,0 +1,11 @@
+<div class="container w-50">
+
+    <form action="/update-category" method="POST">
+        <div class="mb-3 mt-3">
+            <label for="tenDanhMuc" class="form-label">Tên danh mục:</label>
+            <input type="text" class="form-control" value="<%=data.rows.tenDanhMuc%>" name="tenDanhMuc">
+        </div>
+        <input type="hidden" class="form-control" value="<%=data.rows.idDanhMuc%>" name="idDanhMuc">
+        <button type="submit" style="background-color: #ffc107;" class="btn text-light">Cập nhật</button>
+    </form>
+</div>

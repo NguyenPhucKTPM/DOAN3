@@ -1,0 +1,42 @@
+<div class="container w-50">
+    <form action="/update-info-user" method="POST">
+        <div class="mb-3 mt-3">
+            <label for="email" class="form-label">Họ tên:</label>
+            <input type="text" class="form-control" value="<%=data.rows.fullName %>" name="fullName">
+        </div>
+        <div class="mb-3 mt-3">
+            <div class="form-check">
+                <input class="form-check-input" 
+                type="radio" name="sex" 
+                id="nam" value="Nam" 
+                <%= data.rows.sex === 'Nam' ? 'checked' : '' %>  
+                >
+                <label class="form-check-label" for="nam">
+                  Nam
+                </label>
+              </div>
+              
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="sex"
+                 id="nu" value="Nữ"
+                 <%= data.rows.sex === 'Nữ' ? 'checked' : '' %>  
+                >
+                <label class="form-check-label" for="nu">
+                  Nữ
+                </label>
+              </div>
+        </div>
+        <div class="mb-3 mt-3">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" class="form-control" value="<%=data.rows.email %>" name="email">
+        </div>
+        <div class="mb-3 mt-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Địa chỉ</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="address" ><%=data.rows.address%></textarea>
+        </div>
+        <div class="mb-3 mt-3">
+           <span class="text-primary"><%= data.noti ? data.noti : '' %></span>
+        </div>
+        <button type="submit" style="background-color: #ffc107;" class="btn text-light">Cập nhật</button>
+    </form>
+</div>

@@ -1,0 +1,54 @@
+<div class="container w-50">
+    <form action="/update-product" method="POST">
+        <div class="mb-3 mt-3">
+            <label for="tenSanPham" class="form-label">Nhập tên sản phẩm:</label>
+            <input type="text" id="tenSanPham" class="form-control" value="<%=data.rows.tenSanPham%>" name="tenSanPham">
+            <input type="hidden" class="form-control" value="<%=data.rows.idSanPham%>" name="idSanPham">
+        </div> 
+        <div class="mt-3 mb-3">
+            <label for="idDanhMuc" class="form-label">Chọn danh mục:</label>
+            <select class="form-select" id="idDanhMuc" aria-label="Default select example" name="idDanhMuc">
+                <option selected value="<%=data.rows.idDanhMuc%>"><%=data.rows.tenDanhMuc%></option>
+                <% categories.forEach(function(category) { %>
+                <option value="<%= category.idDanhMuc %>"><%= category.tenDanhMuc %></option>
+                <% }) %>
+              </select>
+        </div>
+        <div class="mb-3 mt-3">
+            <label for="gia" class="form-label">Nhập giá sản phẩm:</label>
+            <input type="text" id="gia" class="form-control" oninput="formatPrice(this) " value="<%= data.rows.gia.toLocaleString('vi-VN') %>" name="gia">
+        </div> 
+        <div class="mb-3 mt-3">
+            <label for="khuyenMai" class="form-label">Nhập khuyến mãi:</label>
+            <input type="text" id="khuyenMai" class="form-control" value="<%=data.rows.khuyenMai%>" name="khuyenMai">
+        </div> 
+        <div class="mb-3 mt-3">
+            <label for="hinhAnh" class="form-label">Chọn hình ảnh:</label>
+            <input type="file" id="hinhAnh" class="form-control" value="<%= data.rows.hinhAnh %>" name="hinhAnh">
+            <input type="hidden" name="hinhAnhCu" value="<%= data.rows.hinhAnh %>">
+        </div> 
+        <div>
+            <img src="/image/product/<%= data.rows.hinhAnh %>" width="100" height="100" class="img-fluid">
+        </div>
+        <div class="mb-3 mt-3">
+            <label for="noibat" class="form-label">Chọn nổi bật:</label>
+            <select id="noibat" class="form-select"aria-label="default input example" name="noiBat">
+                <option selected value="<%=data.rows.noiBat%>"><%= data.rows.noiBat == 1 ? 'Nổi bật' : 'Không nổi bật' %></option>
+                <option value="0">Không nổi bật</option>
+                <option value="1">Nổi bật</option>
+            </select>
+        </div>
+        <div class="mb-3 mt-3">
+            <label for="editor" class="form-label">Nhập mô tả:</label>
+            <textarea name="moTa" id="editor"><%=data.rows.moTa%></textarea>
+        </div>
+
+        <div class="mb-3 mt-3">
+            <span class="text-danger"><%= data.error ? data.error : '' %></span>
+            <span class="text-primary"><%= data.noti ? data.noti : '' %></span>
+        </div>
+
+        
+        <button type="submit" style="background-color: #ffc107;" class="btn text-light">Cập nhật</button>
+    </form>
+</div>

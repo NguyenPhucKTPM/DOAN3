@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="/font-awesome-4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="/bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/login.css" />
+    <link rel="stylesheet" href="/css/register.css" />
+    <link rel="stylesheet" href="/css/viewProduct.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <title><%= data.title %></title>
+  </head>
+  <body>
+    <div class="header"><%- include('partials/header') %></div>
+
+    <% if(data.title != 'Trang chủ') { %>
+    <div class="mb-3">
+      <nav
+        style="
+          --bs-breadcrumb-divider: url(
+            &#34;data:image/svg + xml,
+            %3Csvgxmlns='http://www.w3.org/2000/svg'width='8'height='8'%3E%3Cpathd='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z'fill='%236c757d'/%3E%3C/svg%3E&#34;
+          );
+        "
+        aria-label="breadcrumb"
+      >
+        <ol class="breadcrumb">
+          <div class="container d-flex">
+            <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+              <%= data.title %>
+            </li>
+          </div>
+        </ol>
+      </nav>
+    </div>
+    <%}%>
+
+    <div class="body container mt-5 mb-5">
+      <% if(data.page) { %> <%- include(data.page) %> <%}%>
+    </div>
+
+    <div class="footer"><%- include('partials/footer') %></div>
+  </body>
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/popper.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/header.js"></script>
+  <script src="/js/editQuantity.js"></script>
+</html>

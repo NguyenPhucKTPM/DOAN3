@@ -1,0 +1,13 @@
+<h1>Tên sản phẩm: <strong><%= data.rows.tenSanPham %></strong></h1>
+<h1>Giá: <strong><%= data.rows.gia.toLocaleString('vi-VN') + " VNĐ" %></strong></h1>
+<h1>Khuyến mãi: <strong><%= data.rows.khuyenMai + '%' %></strong></h1>
+<h1>Thuộc danh mục: <strong><%= data.rows.tenDanhMuc %></strong></h1>
+<h1>Hình ảnh: </h1>
+<img src="/image/product/<%= data.rows.hinhAnh %>" width="100" height="100" class="img-fluid">
+<h1>Độ nổi bật: <%= data.rows.noiBat == 1 ? 'Nổi bật' : 'Không nổi bật' %></h1>
+<h1>Thời gian thêm: <%= (new Date(data.rows.ngayTaoSanPham)).toLocaleString('vi-VN', { dateStyle: 'short', timeStyle: 'medium' }) %></h1>
+<h1>Thời gian sửa: <%= (new Date(data.rows.ngaySuaSanPham)).toLocaleString('vi-VN', { dateStyle: 'short', timeStyle: 'medium' }) %></h1>
+<h1>Mô tả: <%= data.rows.tenSanPham %></h1>
+<div>
+    <%= data.rows.moTa %>
+</div>

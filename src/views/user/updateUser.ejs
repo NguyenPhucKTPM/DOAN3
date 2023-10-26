@@ -1,0 +1,54 @@
+<div class="container w-50">
+    <form action="/update-user" method="POST">
+        <div class="mb-3 mt-3 d-none">
+            <label for="userName" class="form-label">Tên người dùng:</label>
+            <input type="text" id="userName" class="form-control" value="<%=data.rows.userName%>" name="userName">
+        </div>
+        <div class="mb-3 mt-3">
+            <label for="password" class="form-label">Mật khẩu:</label>
+            <input type="password" id="password" class="form-control" value="<%=data.rows.password %>" name="password">
+        </div>
+        <div class="mb-3 mt-3">
+            <label for="fullName" class="form-label">Họ tên:</label>
+            <input type="text" id="fullName" class="form-control" value="<%=data.rows.fullName %>" name="fullName">
+        </div>
+        <div class="mb-3 mt-3">
+            <div class="form-check">
+                <input class="form-check-input" 
+                type="radio" name="sex" 
+                id="nam" value="Nam" 
+                <%= data.rows.sex === 'Nam' ? 'checked' : '' %>
+                >
+                <label class="form-check-label" for="nam">
+                  Nam
+                </label>
+              </div>
+              
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="sex"
+                 id="nu" value="Nữ"
+                 <%= data.rows.sex === 'Nữ' ? 'checked' : '' %>
+                >
+                <label class="form-check-label" for="nu">
+                  Nữ
+                </label>
+              </div>
+        </div>
+        <div class="mb-3 mt-3">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" id="email" class="form-control" value="<%=data.rows.email %>" name="email">
+        </div>
+        <div class="mb-3 mt-3">
+            <label for="address" class="form-label">Địa chỉ</label>
+            <textarea class="form-control" id="address" rows="3" name="address" ><%=data.rows.address%></textarea>
+        </div>
+        <div class="mt-3 mb-3">
+            <select class="form-select" aria-label="Default select example" name="groupID">
+                <option selected value="1"><%=data.rows.role %></option>
+                <option value="1">Admin</option>
+                <option value="2">User</option>
+              </select>
+        </div>
+        <button type="submit" style="background-color: #ffc107;" class="btn text-light">Cập nhật</button>
+    </form>
+</div>

@@ -1,0 +1,22 @@
+<div class="container w-50">
+    <form action="/update-pass" method="POST">
+        <div class="mb-3 mt-3">
+            <label for="curPass" class="form-label">Nhập mật khẩu hiện tại:</label>
+            <input type="password" id="curPass" class="form-control"  name="curPass">
+        </div>
+        <div class="mb-3 mt-3">
+            <label for="password" class="form-label">Nhập mật khẩu mới:</label>
+            <input type="password" id="password" class="form-control"  name="password">
+        </div>
+        <div class="mb-3 mt-3">
+            <label for="rePassword" class="form-label">Xác nhập mật khẩu mới:</label>
+            <input type="password" id="rePassword" class="form-control"  name="rePassword">
+        </div>
+        <div class="mb-3 mt-3">
+            <span class="text-danger"><%= data.error ? data.error : '' %></span>
+            <span class="text-primary"><%= data.noti ? data.noti : '' %></span>
+        </div>
+        
+        <button type="submit" style="background-color: #ffc107;" class="btn text-light">Cập nhật</button>
+    </form>
+</div>

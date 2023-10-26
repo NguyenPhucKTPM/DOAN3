@@ -1,0 +1,48 @@
+<div class="container w-50">
+    <form action="/insert-product" method="POST">
+        <div class="mb-3 mt-3">
+            <label for="tenSanPham" class="form-label">Nhập tên sản phẩm:</label>
+            <input type="text" id="tenSanPham" class="form-control" name="tenSanPham">
+        </div> 
+        <div class="mt-3 mb-3">
+            <label for="idDanhMuc" class="form-label">Chọn danh mục:</label>
+            <select class="form-select" id="idDanhMuc" aria-label="Default select example" name="idDanhMuc">
+                <option selected>Chọn danh mục</option>
+                <% categories.forEach(function(category) { %>
+                <option value="<%= category.idDanhMuc %>"><%= category.tenDanhMuc %></option>
+                <% }) %>
+              </select>
+        </div>
+        <div class="mb-3 mt-3">
+            <label for="gia" class="form-label">Nhập giá sản phẩm:</label>
+            <input type="text" id="gia" class="form-control" oninput="formatPrice(this) " name="gia">
+        </div> 
+        <div class="mb-3 mt-3">
+            <label for="khuyenMai" class="form-label">Nhập khuyến mãi:</label>
+            <input type="text" id="khuyenMai" class="form-control" name="khuyenMai">
+        </div> 
+        <div class="mb-3 mt-3">
+            <label for="hinhAnh" class="form-label">Chọn hình ảnh:</label>
+            <input type="file" id="hinhAnh" class="form-control" name="hinhAnh">
+        </div> 
+        <div class="mb-3 mt-3">
+            <label for="noibat" class="form-label">Chọn nổi bật:</label>
+            <select id="noibat" class="form-select"aria-label="default input example" name="noiBat">
+                <option selected>Chọn nổi bật</option>
+                <option value="0">Không nổi bật</option>
+                <option value="1">Nổi bật</option>
+            </select>
+        </div>
+        <div class="mb-3 mt-3">
+            <textarea name="moTa" id="editor">Nhập mô tả...</textarea>
+        </div>
+
+        <div class="mb-3 mt-3">
+            <span class="text-danger"><%= data.error ? data.error : '' %></span>
+            <span class="text-primary"><%= data.noti ? data.noti : '' %></span>
+        </div>
+
+        
+        <button type="submit" style="background-color: #ffc107;" class="btn text-light">Thêm</button>
+    </form>
+</div>

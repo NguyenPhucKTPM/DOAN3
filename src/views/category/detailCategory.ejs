@@ -1,0 +1,5 @@
+<h1>Chi tiết danh mục</h1>
+<h1>Tên danh mục: <%=data.rows.tenDanhMuc %></h1>
+<h1>Ngày thêm: <%= (new Date(data.rows.ngayThem)).toLocaleString('vi-VN', { dateStyle: 'short', timeStyle: 'medium' }) %></h1>
+
+<h1>Ngày sửa: <%= data.rows.ngaySua == "Invalid Date" ? '' : (new Date(data.rows.ngaySua)).toLocaleString('vi-VN', { dateStyle: 'short', timeStyle: 'medium' })  %></h1>
