@@ -24,7 +24,7 @@
                 <td scope="row"><%= i+1 %></td>
                 <th><%= data.rows[i].tenDanhMuc %></th>
                 <th><%= data.rows[i].tenSanPham %></th>
-                <th class="text-center"><img src="/image/product/<%= data.rows[i].hinhAnh %>" width="100" height="100" class="img-fluid"></th>
+                <th class="text-center"><img src="<%= data.rows[i].hinhAnh %>" width="100" height="100" class="img-fluid"></th>
                 <td><%= data.rows[i].gia.toLocaleString('vi-VN') + " VNĐ" %></td>
                 <th><%= data.rows[i].khuyenMai + '%' %></th>
                 <th>
@@ -35,7 +35,7 @@
                         <a href="/edit-product/<%= data.rows[i].idSanPham %>"class="text-warning">
                             <i class="fa fa-pencil-square fa-lg" aria-hidden="true"></i>
                         </a>
-                        <a href="/delete-product/<%= data.rows[i].idSanPham %>"class="text-danger">
+                        <a href="/delete-product/<%= data.rows[i].idSanPham%>"class="text-danger">
                             <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
                         </a>
                     </div>

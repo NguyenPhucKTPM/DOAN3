@@ -5,10 +5,13 @@ import userController from "../controllers/userController";
 import categoryController from "../controllers/categoryController";
 import productController from "../controllers/productController";
 import { isLogin, allowedRoles } from "../middleware/auth";
+import uploadCloud from "../middleware/upload";
+import { name } from "ejs";
 
 const router = express.Router();
 
 const initWebRoute = (app) =>{
+
 
 
     router.get('/',getHomePage);
@@ -71,10 +74,26 @@ const initWebRoute = (app) =>{
     router.get('/detail-product/:idSanPham',isLogin,allowedRoles(["admin"]),productController.detailProduct);
 
     router.get('/create-new-product',isLogin,allowedRoles(["admin"]),productController.createProduct);
-    router.post('/insert-product',isLogin,allowedRoles(["admin"]),productController.insertProduct);
+    router.post('/insert-product',
+    isLogin,allowedRoles(["admin"]),
+    uploadCloud.fields
+    ([
+        { name: 'hinhAnh', maxCount: 1 },
+        { name: 'hinhAnhPhu', maxCount: 10 }
+    ]),
+    productController.insertProduct);
 
     router.get('/edit-product/:idSanPham',isLogin,allowedRoles(["admin"]),productController.editProduct);
-    router.post('/update-product',isLogin,allowedRoles(["admin"]),productController.updateProduct);
+    router.post('/update-product',
+    isLogin,allowedRoles(["admin"]),
+    uploadCloud.fields
+    ([
+        { name: 'hinhAnh', maxCount: 1 },
+        { name: 'hinhAnhPhu', maxCount: 10 }
+    ]),
+    productController.updateProduct);
+
+    router.get('/delete-image-product/:idHinhAnhPhu/:idSanPham',isLogin,allowedRoles(["admin"]),productController.deleteImagesProduct);
 
     //user
     router.get('/phone/:tenDanhMuc/:idDanhMuc',productController.viewProduct);

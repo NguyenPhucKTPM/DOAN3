@@ -1,5 +1,5 @@
 <div class="container w-50">
-    <form action="/insert-product" method="POST">
+    <form action="/insert-product" method="POST" enctype="multipart/form-data">
         <div class="mb-3 mt-3">
             <label for="tenSanPham" class="form-label">Nhập tên sản phẩm:</label>
             <input type="text" id="tenSanPham" class="form-control" name="tenSanPham">
@@ -22,8 +22,12 @@
             <input type="text" id="khuyenMai" class="form-control" name="khuyenMai">
         </div> 
         <div class="mb-3 mt-3">
-            <label for="hinhAnh" class="form-label">Chọn hình ảnh:</label>
+            <label for="hinhAnh" class="form-label">Chọn hình ảnh chính:</label>
             <input type="file" id="hinhAnh" class="form-control" name="hinhAnh">
+        </div> 
+        <div class="mb-3 mt-3">
+            <label for="hinhAnh" class="form-label">Chọn hình ảnh phụ:</label>
+            <input type="file" id="hinhAnhPhu" class="form-control" name="hinhAnhPhu" multiple>
         </div> 
         <div class="mb-3 mt-3">
             <label for="noibat" class="form-label">Chọn nổi bật:</label>
@@ -40,8 +44,7 @@
         <div class="mb-3 mt-3">
             <span class="text-danger"><%= data.error ? data.error : '' %></span>
             <span class="text-primary"><%= data.noti ? data.noti : '' %></span>
-        </div>
-
+        </div>        
         
         <button type="submit" style="background-color: #ffc107;" class="btn text-light">Thêm</button>
     </form>

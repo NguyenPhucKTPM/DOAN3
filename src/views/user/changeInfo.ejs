@@ -1,42 +1,120 @@
-<div class="container w-50">
-    <form action="/update-info-user" method="POST">
-        <div class="mb-3 mt-3">
-            <label for="email" class="form-label">Họ tên:</label>
-            <input type="text" class="form-control" value="<%=data.rows.fullName %>" name="fullName">
+<div class="container">
+  <div class="d-flex justify-content-center">
+    <!-- Registeration Form -->
+    <div class="col-md-7 col-lg-6">
+      <form action="/update-info-user" method="POST">
+        <div class="row">
+          <!-- First Name -->
+          <div class="input-group col-lg-6 mb-4">
+            <div class="input-group-prepend">
+              <span
+                class="input-group-text bg-white px-4 border-md border-right-0"
+              >
+                <i class="fa fa-user text-muted"></i>
+              </span>
+            </div>
+            <input
+              id="fullName"
+              type="text"
+              name="fullName"
+              value="<%= data.rows.fullName %>"
+              class="form-control bg-white border-left-0 border-md"
+            />
+          </div>
+
+          <!-- SDT-->
+          <div class="input-group col-lg-6 mb-4">
+            <div class="input-group-prepend">
+              <span
+                class="input-group-text bg-white px-4 border-md border-right-0"
+              >
+                <i class="fa fa-phone-square text-muted"></i>
+              </span>
+            </div>
+            <input
+              id="SDT"
+              type="text"
+              name="SDT"
+              value="<%= data.rows.SDT %>"
+              class="form-control bg-white border-left-0 border-md"
+            />
+          </div>
+
+          <!-- Email Address -->
+          <div class="input-group col-lg-12 mb-4">
+            <div class="input-group-prepend">
+              <span
+                class="input-group-text bg-white px-4 border-md border-right-0"
+              >
+                <i class="fa fa-envelope text-muted"></i>
+              </span>
+            </div>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              value="<%= data.rows.email %>"
+              class="form-control bg-white border-left-0 border-md"
+            />
+          </div>
+
+          <!-- sex -->
+          <div class="input-group col-lg-12 mb-4">
+            <div class="input-group-prepend">
+              <span
+                class="input-group-text bg-white px-4 border-md border-right-0"
+              >
+                <i class="fa fa-venus-mars" aria-hidden="true"></i>
+              </span>
+            </div>
+            <select
+              id="sex"
+              name="sex"
+              class="form-control custom-select bg-white border-left-0 border-md"
+            >
+              <option value="<%= data.rows.sex %>" selected>
+                <%= data.rows.sex %>
+              </option>
+              <option value="Nam">Nam</option>
+              <option value="Nữ">Nữ</option>
+              <option value="Khác">Khác</option>
+            </select>
+          </div>
+
+          <!-- Address -->
+          <div class="input-group col-lg-12 mb-4">
+            <div class="input-group-prepend">
+              <span
+                class="input-group-text bg-white px-4 border-md border-right-0"
+              >
+                <i class="fa fa-map-pin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <input
+              id="address"
+              type="text"
+              name="address"
+              value="<%= data.rows.address %>"
+              class="form-control bg-white border-left-0 border-md"
+            />
+          </div>
+
+          <!-- Notification -->
+          <div class="form-group col-lg-12 mx-auto mb-3">
+            <span class="text-primary"><%= data.noti ? data.noti : '' %></span>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-group col-lg-12 mx-auto mb-0">
+            <button
+              type="submit"
+              class="form-control btn btn-primary rounded submit px-3 fs-5"
+            >
+              Cập nhật
+            </button>
+          </div>
         </div>
-        <div class="mb-3 mt-3">
-            <div class="form-check">
-                <input class="form-check-input" 
-                type="radio" name="sex" 
-                id="nam" value="Nam" 
-                <%= data.rows.sex === 'Nam' ? 'checked' : '' %>  
-                >
-                <label class="form-check-label" for="nam">
-                  Nam
-                </label>
-              </div>
-              
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="sex"
-                 id="nu" value="Nữ"
-                 <%= data.rows.sex === 'Nữ' ? 'checked' : '' %>  
-                >
-                <label class="form-check-label" for="nu">
-                  Nữ
-                </label>
-              </div>
-        </div>
-        <div class="mb-3 mt-3">
-            <label for="email" class="form-label">Email:</label>
-            <input type="email" class="form-control" value="<%=data.rows.email %>" name="email">
-        </div>
-        <div class="mb-3 mt-3">
-            <label for="exampleFormControlTextarea1" class="form-label">Địa chỉ</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="address" ><%=data.rows.address%></textarea>
-        </div>
-        <div class="mb-3 mt-3">
-           <span class="text-primary"><%= data.noti ? data.noti : '' %></span>
-        </div>
-        <button type="submit" style="background-color: #ffc107;" class="btn text-light">Cập nhật</button>
-    </form>
+      </form>
+    </div>
+  </div>
 </div>

@@ -19,9 +19,9 @@ const insertUser = async(userName,password,fullName,address,sex,email,groupID) =
     await pool.execute('INSERT INTO users(userName,password,fullName,address,sex,email,groupID) VALUES (?,?,?,?,?,?,?)'
     ,[userName,password,fullName,address,sex,email,groupID]);
 }
-const signup = async(userName,password,fullName,address,sex,email) =>{
-    await pool.execute('INSERT INTO users(userName,password,fullName,address,sex,email) VALUES (?,?,?,?,?,?)'
-    ,[userName,password,fullName,address,sex,email]);
+const signup = async(userName,password,fullName,address,sex,email,SDT) =>{
+    await pool.execute('INSERT INTO users(userName,password,fullName,address,sex,email,SDT) VALUES (?,?,?,?,?,?,?)'
+    ,[userName,password,fullName,address,sex,email,SDT]);
 }
 const updateUser = async(password,fullName,address,sex,email,groupID,userName) =>{
     await pool.execute('UPDATE users SET password = ? ,fullName = ?,address = ?,sex = ?,email = ?,groupID =  ? WHERE userName = ?',
@@ -39,9 +39,9 @@ const getSessionUserName = async (userName) =>{
     ('SELECT * FROM users,groups WHERE users.groupID = groups.id AND userName=?',[userName])
     return rows[0]
 }
-const updateInfoUser = async(fullName,address,sex,email,userName) =>{
-    await pool.execute('UPDATE users SET fullName = ?,address = ?,sex = ?,email = ? WHERE userName = ?',
-    [fullName,address,sex,email,userName])
+const updateInfoUser = async(fullName,address,sex,email,SDT,userName) =>{
+    await pool.execute('UPDATE users SET fullName = ?,address = ?,sex = ?,email = ?,SDT=? WHERE userName = ?',
+    [fullName,address,sex,email,SDT,userName])
 }
 const updatePassword = async(password,userName) =>{
     await pool.execute('UPDATE users SET password = ? WHERE userName = ?',

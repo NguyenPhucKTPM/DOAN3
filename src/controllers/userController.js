@@ -40,15 +40,15 @@ const register = (req,res) =>{
 }
 const signup = async(req,res) =>{
     if(req.session.user) return res.redirect("/");
-    let {userName,password,repassword,fullName,address,sex,email} = req.body;
-    if (!userName || !password || !repassword || !address || !sex || !email) return res.render("index",{data:{error:'Thông tin không được để trống',page:'user/register',title:'Đăng kí thất bại'} });
+    let {userName,password,repassword,fullName,address,sex,email,SDT} = req.body;
+    if (!userName || !password || !repassword || !address || !sex || !email || !SDT) return res.render("index",{data:{error:'Thông tin không được để trống',page:'user/register',title:'Đăng kí thất bại'} });
     let checkUserName = await userModel.checkUserName(userName)
     if(checkUserName.length  > 0) return res.render("index",{data:{error:'Tài khoản đã tồn tại',page:'user/register',title:'Đăng kí thất bại'} });
     if(password != repassword) return res.render("index",{data:{error:'Nhập lại mật khẩu không đúng',page:'user/register',title:'Đăng kí thất bại'} });
     const saltRounds = 10;
     const salt = bcrypt.genSaltSync(saltRounds);
     const hashedPassword = bcrypt.hashSync(password, salt);
-    await userModel.signup(userName,hashedPassword,fullName,address,sex,email)
+    await userModel.signup(userName,hashedPassword,fullName,address,sex,email,SDT)
     return res.render("index",{data:{noti:'Đăng kí tài khoản thành công',page:'user/register',title:'Đăng kí thành công'} });
 }
 const logout = async (req, res, next) => {
@@ -120,9 +120,9 @@ const editInfoUser = async (req, res) => {
     return res.render('index',{data:{title:'Cập nhật người dùng',page:'user/changeInfo',rows:detailUser} });
 }
 const updateInfoUser = async (req, res) => {
-    let {fullName,address,sex,email} = req.body;
+    let {fullName,address,sex,email,SDT} = req.body;
     const userName = req.session.user.userName
-    await userModel.updateInfoUser(fullName,address,sex,email,userName)
+    await userModel.updateInfoUser(fullName,address,sex,email,SDT,userName)
     let detailUser = await userModel.getSessionUserName(userName)
     return res.render('index',{data:{title:'Cập nhật người dùng',page:'user/changeInfo',rows:detailUser,noti:'Cập nhật thông tin thành công'} });
 }
