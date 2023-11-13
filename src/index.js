@@ -9,6 +9,7 @@ import session from "express-session";
 import { createClient } from "redis";
 import categoryModel from './services/categoryModel';
 
+
 const app = express();
 dotenv.config();
 const port = process.env.PORT;
@@ -32,11 +33,13 @@ app.use(
     secret: "keyboard cat",
   })
 );
+
 // all routes bien cuc bo
 app.use("*", async function  (req, res, next) {
   // gan vao bien  locals de cac trang views deu nhan duoc
   // thong tin user
   res.locals.user = req?.session?.user || null;
+  res.locals.cart = req?.session?.cart || null;
   
   //goi danh muc tu csdl de hien thi len header trang chu
   let listCategory = await categoryModel.getAllCategory();

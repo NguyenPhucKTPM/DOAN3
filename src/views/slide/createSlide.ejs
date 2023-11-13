@@ -1,0 +1,18 @@
+<div class="container w-50">
+    <form action="/insert-slide" method="POST" enctype="multipart/form-data">
+        <div class="mb-3 mt-3">
+            <label for="duongDan" class="form-label">Nhập đường dẫn:</label>
+            <input type="text" id="duongDan" class="form-control" name="duongDan">
+        </div>  
+        <div class="mb-3 mt-3">
+            <label for="hinhSlide" class="form-label">Chọn hình ảnh:</label>
+            <input type="file" id="hinhSlide" class="form-control"   name="hinhSlide">
+        </div>  
+        <div class="mb-3 mt-3">
+            <span class="text-danger"><%= data.error ? data.error : '' %></span>
+            <span class="text-primary"><%= data.noti ? data.noti : '' %></span>
+        </div>
+        
+        <button type="submit" style="background-color: #ffc107;" class="btn text-light">Thêm</button>
+    </form>
+</div>

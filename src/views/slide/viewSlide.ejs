@@ -1,0 +1,7 @@
+<swiper-container class="mySwiper" style="--swiper-navigation-color: #f1bc31; --swiper-pagination-color: #f1bc31"
+ pagination="true" pagination-clickable="true" navigation="true" space-between="30"
+centered-slides="true" autoplay-delay="2500" autoplay-disable-on-interaction="false" loop="true">
+<% for (let i=0;i<data.listSlide.length;i++) { %>
+    <swiper-slide><img src="<%= data.listSlide[i].hinhSlide %>" alt=""></swiper-slide>
+<% } %>    
+</swiper-container>

@@ -1,0 +1,20 @@
+<div class="container w-50">
+    <form action="/update-slide" method="POST" enctype="multipart/form-data">
+        <div class="mb-3 mt-3">
+            <label for="duongDan" class="form-label">Nhập đường dẫn:</label>
+            <input type="text" id="duongDan" class="form-control" value="<%=data.rows.duongDan %>" name="duongDan">
+        </div>  
+        <div class="mb-3 mt-3">
+            <label for="hinhSlide" class="form-label">Chọn hình ảnh:</label>
+            <input type="file" id="hinhSlide" class="form-control"   name="hinhSlide">
+        </div>  
+        <div class="mt-2 mb-2">
+            <img src="<%=data.rows.hinhSlide %>" width="700" alt="">
+            <input type="hidden" name="tenSlide" value="<%=data.rows.tenSlide %>">
+            <input type="hidden" name="hinhSlide" value="<%=data.rows.hinhSlide %>">
+            <input type="hidden" name="idSlide" value="<%=data.rows.idSlide %>">
+        </div>
+        
+        <button type="submit" style="background-color: #ffc107;" class="btn text-light">Cập nhật</button>
+    </form>
+</div>

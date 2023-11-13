@@ -1,65 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        
-    </title>
-</head>
 <style>
-    table.table thead th {
-        background-color: #f8b739;
-        color: white;
-    }
-</style>
-<body>
-    <div class="container-fluid1 table-responsive py-5">
-        <table class="table table-bordered table-hover">
-            <thead class=" thead-danger">
-              <tr>
-                <th scope="col">STT</th>
-                <th scope="col">Họ tên</th>
-                <th scope="col">Tên tài khoản</th>
-                <th scope="col">Giới tính</th>
-                <th scope="col">Email</th>
-                <th scope="col">Địa chỉ</th>
-                <th scope="col">Quyền</th>
-                <th scope="col">Cấu hình</th>
-              </tr>
-            </thead>
-            <tbody>
-            <% for(let i=0;i<data.rows.length;i++) { %>
-              <tr>
-                <th scope="row"><%= i+1 %></th>
-                <th><%= data.rows[i].fullName %></th>
-                <th><%= data.rows[i].userName %></th>
-                <th><%= data.rows[i].sex %></th>
-                <th><%= data.rows[i].email %> </th>
-                <th><%= data.rows[i].address %></th>
-                <th><%= data.rows[i].role %></th>
-                <th>
-                    <div class="d-flex justify-content-around">
-                        <a href="/view-detail-user/<%= data.rows[i].userName %>" class="text-black">
-                            <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
-                        </a>
-                        <a href="/edit-user/<%= data.rows[i].userName %>"class="text-warning">
-                            <i class="fa fa-pencil-square fa-lg" aria-hidden="true"></i>
-                        </a>
-                        <form action="/delete-user" method="POST">
-                            <input type="hidden" value="<%= data.rows[i].userName %>" name="userName">
-                            <label for="<%= data.rows[i].userName %>">
-                                <span class="setting text-danger"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></span>
-                            </label>
-                            <input type="submit" id="<%= data.rows[i].userName %>" value="Xóa" style="display: none;">
-                        </form>
-                    </div>
-                </th>
-              </tr>
-            <% } %>
-            </tbody>
-        </table>
-    </div>
-       
-</body>
-</html>
+    table.dataTable thead th, table.dataTable thead td {
+       border-bottom: none;
+   }
+   </style>
+   
+       <table id="table_id"  class="table table-hover" style="width: 100%;">
+         <thead style="width: 100%;">
+           <tr class="fw-semibold fs-6 text-gray-800">
+               <th class="min-w-50px">STT</th>
+               <th class="min-w-200px">Họ tên</th>
+               <th class="min-w-150px">Tên tài khoản</th>
+               <th class="min-w-50px">Giới tính</th>
+               <th class="min-w-200px">Email</th>
+               <th class="min-w-200px">Địa chỉ</th>
+               <th class="min-w-100px">Quyền</th>
+               <th class="min-w-150px">Tác vụ</th>
+           </tr>
+       </thead>
+       <tbody>
+         <% for(let i=0;i<data.rows.length;i++) { %>
+           <tr style="border: none;">
+               <td><%= i+1 %></td>
+               <td><%= data.rows[i].fullName %></td>
+               <td><%= data.rows[i].userName %></td>
+               <td><%= data.rows[i].sex %></td>
+               <td><%= data.rows[i].email %></td>
+               <td><%= data.rows[i].address %></td>
+               <td><%= data.rows[i].role %></td>
+               <td>
+                <div class="d-flex justify-content-around">
+                    <a href="/view-detail-user/<%= data.rows[i].userName %>" class="text-black">
+                        <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
+                    </a>
+                    <a href="/edit-user/<%= data.rows[i].userName %>"class="text-warning">
+                        <i class="fa fa-pencil-square fa-lg" aria-hidden="true"></i>
+                    </a>
+                    <form action="/delete-user" method="POST">
+                        <input type="hidden" value="<%= data.rows[i].userName %>" name="userName">
+                        <label for="<%= data.rows[i].userName %>">
+                            <span class="setting text-danger"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></span>
+                        </label>
+                        <input type="submit" id="<%= data.rows[i].userName %>" value="Xóa" style="display: none;">
+                    </form>
+                </div>
+               </td>
+           </tr>
+           <% } %>
+       </tbody>
+     </table>

@@ -226,3 +226,6 @@ login-wrap {
     background:#f1bc31;
     color: #fff;
 }
+.border-md {
+    border-width: 1px;
+}

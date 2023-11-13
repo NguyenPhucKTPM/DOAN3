@@ -11,6 +11,11 @@ const detailProduct = async (idSanPham) => {
     ('SELECT * FROM sanpham,danhmuc WHERE sanpham.idDanhMuc = danhmuc.idDanhMuc AND sanpham.idSanPham = ?',[idSanPham])
     return rows[0]
 }
+const detailProduct1 = async (idSanPham) => {
+    const [rows] = await pool.execute
+    ('SELECT * FROM sanpham,danhmuc WHERE sanpham.idDanhMuc = danhmuc.idDanhMuc AND sanpham.idSanPham = ?',[idSanPham])
+    return rows
+}
 const insertProduct = async (tenSanPham,idDanhMuc,gia,khuyenMai,hinhAnh,noiBat,moTa,fileName) => {
     const[result] = await pool.execute('INSERT INTO sanpham (tenSanPham,idDanhMuc,gia,khuyenMai,hinhAnh,noiBat,moTa,fileName) VALUES (?,?,?,?,?,?,?,?)'
     ,[tenSanPham,idDanhMuc,gia,khuyenMai,hinhAnh,noiBat,moTa,fileName]);
@@ -49,6 +54,7 @@ const viewProduct = async (idDanhMuc) =>{
 export default{
     getAllProduct,
     detailProduct,
+    detailProduct1,
     insertProduct,
     insertImagesProduct,
     updateProduct,

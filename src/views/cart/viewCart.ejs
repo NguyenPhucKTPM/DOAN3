@@ -1,0 +1,99 @@
+<div class="container">
+  <form action="/update-cart" method="post">
+    <div class="row">
+      <div class="col-md-12 ftco-animate fadeInUp ftco-animated">
+        <div class="cart-list">
+          <table class="table">
+            <thead class="thead-primary">
+              <tr class="text-center">
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+                <th>Sản phẩm</th>
+                <th>Tạm tính</th>
+                <th>Số lượng</th>
+                <th>Tổng giá</th>
+              </tr>
+            </thead>
+            <% let tongTien = 0; %> 
+            <% data.rows.forEach((sp) => { %>
+                
+            <tbody>
+              <tr class="text-center">
+                <td class="product-remove">
+                  <a href="/clear-product/<%= sp.idSanPham %>"><i class="fa fa-times" aria-hidden="true"></i></a>
+                </td>
+
+                <td class="image-prod">
+                  <img src="<%= sp.hinhAnh %>" width="170" alt="">
+                </td>
+
+                <td class="product-name">
+                  <h3><%= sp.tenSanPham %></h3>
+                </td>
+                <% let giaSale = sp.gia - (sp.gia * (sp.khuyenMai / 100))  %>
+               
+                <td class="price"><%= giaSale.toLocaleString('vi-VN') + '₫' %></td>
+
+                <td class="quantity">
+                  <div class="input-group mb-3">
+                    <input
+                      type="number"
+                      name="qty[<%= sp.idSanPham %>]"
+                      class="quantity form-control input-number text-center"
+                      value="<%= sp.qty %>"
+                      min="1"
+                      max="100"
+                    />
+                  </div>
+                </td>
+
+                <td class="total"><%= (giaSale*sp.qty).toLocaleString('vi-VN') + '₫' %></td>
+              </tr>
+              <!-- END TR-->
+            </tbody>
+            <% }); %>
+          </table>
+        </div>
+      </div>
+    </div>
+    <% if(locals?.cart) { %>
+    <div class="row justify-content-end">
+      <div class="col col-lg-4 col-md-6 mt-2 cart-wrap ftco-animate fadeInUp ftco-animated d-flex justify-content-between">
+        <button type="submit" class="btn" style="background: #f1bc31;">
+          Cập nhật số lượng
+        </button>
+        <button class="btn btn-black">
+          <a class="text-white" href="/clear">Xóa giỏ hàng</a>
+        </button>
+      </div>     
+    </div>
+    <% } %>
+    <div class="row justify-content-start">
+      <div
+        class="col col-lg-5 col-md-6 mt-5 cart-wrap ftco-animate fadeInUp ftco-animated"
+      >
+        <div class="cart-total mb-3">
+          <h3>tổng Đơn giá</h3>
+          <% data.rows.forEach((sp) => { %>
+            <% tongTien += (sp.gia*(100 - sp.khuyenMai)/100)*sp.qty %>
+          <p class="d-flex">
+            <span><%= sp.tenSanPham %> <strong>SL: <%= sp.qty %></strong></span>
+            <% let giaSale = sp.gia - (sp.gia * (sp.khuyenMai / 100))  %>
+            <span class="text-right"><%= (giaSale*sp.qty).toLocaleString('vi-VN') + '₫' %></span>
+          </p>
+          <hr />
+          <% }); %>       
+          <p class="d-flex total-price">
+            <span>Tổng cộng</span>
+            <span class="text-right"><%= tongTien.toLocaleString('vi-VN') + '₫' %></span>
+          </p>
+        </div>
+        <p class="text-center">
+          <a href="/checkout" class="thanhtoan text-center py-3 px-4 fs-6"
+            >Tiến hành thanh toán</a
+          >
+        </p>
+      </div>
+    </div>
+  </form>
+</div>

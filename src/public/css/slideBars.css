@@ -8193,7 +8193,6 @@
     background: #fff;
     border: none;
     border-radius: 0;
-    margin-bottom: 40px;
     -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); }
   
@@ -8286,4 +8285,11 @@
   
   .footer p {
     color: rgba(255, 255, 255, 0.5); }
-  
+    #table_id_filter input[type="Search"] {
+      /* Tùy chỉnh kiểu dáng của phần tử input */
+      /* Ví dụ: */
+      width: 200px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 4px;
+  }

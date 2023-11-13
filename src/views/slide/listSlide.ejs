@@ -1,0 +1,36 @@
+
+    <style>
+        table.dataTable thead th, table.dataTable thead td {
+           border-bottom: none;
+       }
+       </style>
+       
+           <table id="table_id"  class="table table-hover" style="width: 100%;">
+             <thead style="width: 100%;">
+               <tr class="fw-semibold fs-6 text-gray-800">
+                   <th class="min-w-50px">STT</th>
+                   <th class="min-w-400px">Hình ảnh</th>
+                   <th class="min-w-200px">Đường dẫn</th>
+                   <th class="min-w-300px text-center">Tác vụ</th>
+               </tr>
+           </thead>
+           <tbody>
+             <% for(let i=0;i<data.rows.length;i++) { %>
+               <tr style="border: none;">
+                   <td><%= i+1 %></td>
+                   <td><img src="<%= data.rows[i].hinhSlide %>" width="500" alt=""></td>
+                   <td><%= data.rows[i].duongDan %></td>
+                   <td>
+                    <div class="d-flex justify-content-evenly">
+                        <a href="/edit-slide/<%= data.rows[i].idSlide %>"class="text-warning">
+                            <i class="fa fa-pencil-square fa-lg" aria-hidden="true"></i>
+                        </a>
+                        <a href="/delete-slide/<%= data.rows[i].idSlide %>"class="text-danger">
+                            <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                   </td>
+               </tr>
+               <% } %>
+           </tbody>
+         </table>

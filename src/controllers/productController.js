@@ -97,7 +97,8 @@ const viewDetailProduct = async (req, res) => {
     let idSanPham = req.params.idSanPham
     let tenSanPham = req.params.tenSanPham
     let detailProduct = await productModel.detailProduct(idSanPham)
-    return res.render("index", { data: { title: "Chi tiết sản phẩm", page: 'product/viewDetailProduct', rows: detailProduct, getUrl: req.url } })
+    let listImages = await productModel.getDetailImagesProduct(idSanPham)
+    return res.render("index", { data: { title: "Chi tiết sản phẩm", page: 'product/viewDetailProduct', rows: detailProduct, list:listImages, getUrl: req.url } })
 }
 const deleteImagesProduct = async (req, res) => {
     let idHinhAnhPhu = req.params.idHinhAnhPhu

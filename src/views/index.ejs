@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -17,9 +18,11 @@
     />
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/carousel.css" />
     <link rel="stylesheet" href="/css/login.css" />
-    <link rel="stylesheet" href="/css/register.css" />
+    <link rel="stylesheet" href="/css/viewDetailProduct.css" />
     <link rel="stylesheet" href="/css/viewProduct.css" />
+    <link rel="stylesheet" href="/css/cart.css" />
     <link rel="stylesheet" href="/css/footer.css" />
     <title><%= data.title %></title>
   </head>
@@ -27,38 +30,33 @@
     <div class="header"><%- include('partials/header') %></div>
 
     <% if(data.title != 'Trang chủ') { %>
-    <div class="mb-3">
-      <nav
-        style="
-          --bs-breadcrumb-divider: url(
-            &#34;data:image/svg + xml,
-            %3Csvgxmlns='http://www.w3.org/2000/svg'width='8'height='8'%3E%3Cpathd='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z'fill='%236c757d'/%3E%3C/svg%3E&#34;
-          );
-        "
-        aria-label="breadcrumb"
-      >
-        <ol class="breadcrumb">
-          <div class="container d-flex">
-            <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
-            <li class="breadcrumb-item active" aria-current="page">
-              <%= data.title %>
-            </li>
+      <div class="custom-border-bottom py-3">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 mb-0">
+              <a href="/">Trang chủ</a> 
+              <span class="mx-2 mb-0">/</span> 
+              <strong class="text-black"> <%= data.title %></strong>
+            </div>
           </div>
-        </ol>
-      </nav>
-    </div>
+        </div>
+      </div>
     <%}%>
 
-    <div class="body container mt-5 mb-5">
+    <div>
       <% if(data.page) { %> <%- include(data.page) %> <%}%>
     </div>
 
     <div class="footer"><%- include('partials/footer') %></div>
   </body>
   <script src="/js/jquery.min.js"></script>
-  <script src="/js/popper.js"></script>
-  <script src="/js/bootstrap.min.js"></script>
   <script src="/js/header.js"></script>
   <script src="/js/editQuantity.js"></script>
   <script src="/js/checkSignup.js"></script>
+  <script src="/js/popper.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/scroll.min.js"></script>
+  <script src="/js/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
 </html>

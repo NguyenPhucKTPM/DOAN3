@@ -1,12 +1,15 @@
 import express from "express";
-import getHomePage from "../controllers/homeController";
-import aboutPage from "../controllers/aboutController";
+
+import homeController from "../controllers/homeController";
 import userController from "../controllers/userController";
 import categoryController from "../controllers/categoryController";
 import productController from "../controllers/productController";
+import slideController from "../controllers/slideController";
+import cartController from "../controllers/cartController";
+import orderController from "../controllers/orderController";
+
 import { isLogin, allowedRoles } from "../middleware/auth";
 import uploadCloud from "../middleware/upload";
-import { name } from "ejs";
 
 const router = express.Router();
 
@@ -14,9 +17,8 @@ const initWebRoute = (app) =>{
 
 
 
-    router.get('/',getHomePage);
+    router.get('/',homeController.getHomePage);
 
-    router.get('/about', isLogin,aboutPage);
 
     router.get('/admin',userController.admin);
     
@@ -98,6 +100,34 @@ const initWebRoute = (app) =>{
     //user
     router.get('/phone/:tenDanhMuc/:idDanhMuc',productController.viewProduct);
     router.get('/detail-phone/:idSanPham',productController.viewDetailProduct);
+
+    //slideController
+    //admin
+    router.get('/list-slide',isLogin,allowedRoles(["admin"]),slideController.getAllSlide);
+
+    router.get('/create-new-slide',isLogin,allowedRoles(["admin"]),slideController.createSlide);
+    router.post('/insert-slide',isLogin,allowedRoles(["admin"]),uploadCloud.single('hinhSlide'),slideController.insertSlide);
+
+    router.get('/delete-slide/:idSlide',isLogin,allowedRoles(["admin"]),slideController.deleteSlide);
+
+    router.get('/edit-slide/:idSlide',isLogin,allowedRoles(["admin"]),slideController.editSlide);
+    router.post('/update-slide',isLogin,allowedRoles(["admin"]),uploadCloud.single('hinhSlide'),slideController.updateSlide);
+
+
+    //cartControler
+    router.get('/add-cart/:idSanPham',cartController.store)
+    router.get('/cart',cartController.cart)
+    router.get('/clear',cartController.clearAll)
+    router.get('/clear-product/:idSanPham',cartController.clearProduct)
+    router.post('/update-cart',cartController.update)
+
+
+
+    //orderController
+    router.get('/checkout',orderController.checkout)
+    router.post('/insert-order',orderController.insertOrder)
+
+
 
 
     router.use((req, res, next) => {

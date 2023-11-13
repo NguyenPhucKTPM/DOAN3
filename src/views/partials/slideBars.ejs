@@ -18,6 +18,19 @@
     </li>
     </ul>
   </li> -->
+  <li class="<%= (data.getUrl === '/list-slide' || data.getUrl === '/create-new-slide') ? 'active' : '' %>">
+    <a href="#slide" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+        <i class="fa fa-picture-o" aria-hidden="true"></i> Quản lí slide quảng cáo
+    </a>
+    <ul class="collapse list-unstyled" id="slide">
+    <li>
+        <a href="/list-slide">Danh sách slide</a>
+    </li>
+    <li>
+        <a href="/create-new-slide">Thêm slide</a>
+    </li>
+    </ul>
+  </li>
   <li class="<%= (data.getUrl === '/list-user' || data.getUrl === '/create-new-user') ? 'active' : '' %>">
     <a href="#user" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
         <i class="fa fa-users" aria-hidden="true"></i> Quản lí người dùng
@@ -45,7 +58,7 @@
     </ul>
   </li>
   <li>
-  <li>
+  <li class="<%= (data.getUrl === '/list-product' || data.getUrl === '/create-new-product') ? 'active' : '' %>">
     <a href="#product" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
         <i class="fa fa-mobile" aria-hidden="true"></i> Quản lí sản phẩm
     </a>
