@@ -1,0 +1,98 @@
+<div class="container-fluid mb-3 d-flex justify-content-center">
+  <div class="card card-1">
+    <div class="card-header bg-white">
+      <div
+        class="media flex-sm-row flex-column-reverse justify-content-between"
+      >
+        <div class="col my-auto">
+          <h4 class="mb-0">
+            Cảm ơn khách hàng,
+            <span class="change-color"><%= data.getOrder.fullName %></span> !
+          </h4>
+        </div>
+        <!-- <div class="col-auto text-center  my-auto pl-0 pt-sm-4"> <img class="img-fluid my-auto align-items-center mb-0 pt-3"  src="https://i.imgur.com/7q7gIzR.png" width="115" height="115"> <p class="mb-4 pt-0 Glasses">Glasses For Everyone</p>  </div> -->
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row justify-content-between mb-3">
+                  <div class="col-auto">
+                      <h6 class="color-1 mb-0 change-color">Mã đơn hàng: <%= data.getOrder.idDonHang %></h6>
+                  </div>
+                  <div class="col-auto  "> <small>Thời gian đặt: <%=(new Date(data.getOrder.ngayDat)).toLocaleString('vi-VN', { dateStyle: 'short', timeStyle: 'medium' }) %></small> </div>
+              </div>
+      <% let tongTien = 0; %> <% data.getDetailOrder.forEach((sp) => { %> <%
+      tongTien = sp.tongTien %>
+      <div class="row mt-4">
+        <div class="col">
+          <div class="card card-2">
+            <div class="card-body">
+              <div class="media">
+                <div class="sq align-self-center">
+                  <img
+                    class="img-fluid my-auto align-self-center mr-2 mr-md-4 pl-0 p-0 m-0"
+                    src="<%= sp.hinhAnh %>"
+                    width="135"
+                    height="135"
+                  />
+                </div>
+                <div class="media-body my-auto text-right">
+                  <div class="row my-auto flex-column flex-md-row">
+                    <div
+                      class="col-md-6 my-auto p-0"
+                      style="white-space: normal"
+                    >
+                      <strong class="mb-0 fs-6"><%= sp.tenSanPham %></strong>
+                    </div>
+                    <div class="col-md-2 my-auto p-0">
+                      <small>SL: <%= sp.soLuong %></small>
+                    </div>
+                    <div class="col-md-4 my-auto p-0">
+                      <h6 class="mb-0">
+                        <%= (sp.giaTien*sp.soLuong).toLocaleString('vi-VN') +  '₫' %> 
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% }); %>
+      <div class="row mt-4">
+        <div class="col">
+          <div class="col-auto">
+            <p class="mb-1 text-dark"><b>Thông tin nhận hàng:</b></p>
+          </div>
+          <div class="col-auto">
+            <p class="mb-1">Họ tên : <%= data.getOrder.fullName %></p>
+          </div>
+          <div class="col-auto">
+            <p class="mb-1">Số điện thoại : <%= data.getOrder.SDT %></p>
+          </div>
+          <div class="col-auto">
+            <p class="mb-1">Địa chỉ : <%= data.getOrder.address %></p>
+          </div>
+          <div class="col-auto">
+            <p class="mb-1">Email : <%= data.getOrder.email %></p>
+          </div>
+          <div class="col-auto">
+            <p class="mb-1">Hình thức thanh toán : <%= data.getOrder.trangThai == 2 ? 'Đã thanh toán qua cổng thanh toán' : 'Thanh toán khi nhận hàng'  %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="jumbotron-fluid">
+        <div class="row justify-content-between">
+          <div class="col-auto my-auto">
+            <h2 class="mb-0 font-weight-bold text-white">TỔNG CỘNG:</h2>
+          </div>
+          <div class="col-auto my-auto ml-auto">
+            <h6 class="fs-3"><%= tongTien.toLocaleString('vi-VN') + '₫' %></h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

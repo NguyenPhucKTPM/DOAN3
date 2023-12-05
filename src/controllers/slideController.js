@@ -4,7 +4,6 @@ const cloudinary = require('cloudinary').v2;
 
 const getAllSlide = async (req, res) => {
     let listSlide = await slideModel.getAllSlide()
-    console.log(listSlide);
     return res.render('admin', { data: { title: 'Danh sách slide', page: 'slide/listSlide', rows: listSlide, getUrl: req.url } });
 }
 const createSlide = (req, res) => {

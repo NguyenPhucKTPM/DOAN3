@@ -19,9 +19,21 @@ const insertUserOder = async (fullName, address, email, SDT) => {
     const idUser = result.insertId;
     return idUser
 }
+const getOrder = async (idDonHang) =>{
+    const [rows] = await pool.execute
+    ('SELECT * FROM donhang dh, users u WHERE dh.idUser = u.idUser AND dh.idDonHang = ?',[idDonHang])
+    return rows[0]
+}
+const getDetailOrder = async (idDonHang) =>{
+    const [rows] = await pool.execute
+    ('SELECT * FROM chitietdonhang ctdh, sanpham sp WHERE ctdh.idSanPham = sp.idSanPham AND ctdh.idDonHang = ?',[idDonHang])
+    return rows
+}
 export default {
     insertOrder,
     insertDetailOrder,
     updateInfoUser,
-    insertUserOder
+    insertUserOder,
+    getOrder,
+    getDetailOrder
 }

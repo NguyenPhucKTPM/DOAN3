@@ -1,0 +1,23 @@
+.card {
+    box-shadow: 0 2px 4px rgba(0,0,20,.08), 0 1px 2px rgba(0,0,20,.08);
+    border: 0;
+    border-radius: 0.5rem;
+}
+.bg-light-primary {
+    background-color: rgb(248, 230, 195)!important;
+}
+.text-primary {
+    color: #f8b739 !important;
+}
+.icon-shape {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    vertical-align: middle;
+}
+.icon-md {
+    width: 2.5rem;
+    height: 2.5rem;
+    line-height: 2.5rem;
+}

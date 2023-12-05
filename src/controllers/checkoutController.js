@@ -1,9 +1,13 @@
 import express from "express";
 import dotenv from 'dotenv';
-import orderModel from "../services/checkoutModel";
+import checkout from "../services/checkoutModel";
+import { order } from "paypal-rest-sdk";
+import checkoutModel from "../services/checkoutModel";
+import { get } from "config";
 const moment = require('moment');
 const dateFormat = require('dateformat');
 const jwt = require('jsonwebtoken');
+
 function sortObject(obj) {
     let sorted = {};
     let str = [];
@@ -19,34 +23,27 @@ function sortObject(obj) {
     }
     return sorted;
 }
-const checkout = async (req, res) => {
+const formCheckout = async (req, res) => {
     let dataCart = req.session.cart;
     if (!req.session.cart) {
         dataCart = []
         res.redirect('/cart');
     }
-    return res.render('index', { data: { title: 'Thanh toán', rows: dataCart, page: 'order/checkout' } });
+    return res.render('index', { data: { title: 'Thanh toán', rows: dataCart, page: 'pay/checkout' } });
 }
-
 const insertOrder = async (req, res) => {
     let dataCart = req.session.cart;
     let { fullName, address, email, SDT, idUser, ghiChu, pay } = req.body;
-    const payload = {
-        user: {  fullName, address, email, SDT,},          
-        order: { dataCart, ghiChu},
-    }
-    const secretKey = process.env.SERECT_KEY; 
-    const token = jwt.sign(payload, secretKey, { expiresIn: '1h' });
-
+    const secretKeyId = process.env.SERECT_KEY;
     // truong hop dang nhap
     if (req.session.user) {
         //thanh toan truc tiep
         if (pay === 'pay') {
             if (!fullName || !address || !SDT || !email || !idUser) {
-                return res.render('index', { data: { title: 'Thanh toán', rows: dataCart, error: 'Thông tin không được bỏ trống', page: 'order/checkout' } });
+                return res.render('index', { data: { title: 'Thanh toán', rows: dataCart, error: 'Thông tin không được bỏ trống', page: 'pay/checkout' } });
             }
-            await orderModel.updateInfoUser(fullName, address, email, SDT, idUser)
-            const idDonhang = await orderModel.insertOrder(idUser, ghiChu, 0)
+            await checkoutModel.updateInfoUser(fullName, address, email, SDT, idUser)
+            const idDonhang = await checkoutModel.insertOrder(idUser, ghiChu, 0)
             let tongTien = 0;
             dataCart.forEach(sp => {
                 tongTien += (sp.gia * (100 - sp.khuyenMai) / 100) * sp.qty
@@ -55,18 +52,20 @@ const insertOrder = async (req, res) => {
                 let idSanPham = sp.idSanPham;
                 let giaTien = sp.gia - (sp.gia * (sp.khuyenMai / 100))
                 let soLuong = sp.qty;
-                await orderModel.insertDetailOrder(idDonhang, idSanPham, giaTien, soLuong, tongTien);
+                await checkoutModel.insertDetailOrder(idDonhang, idSanPham, giaTien, soLuong, tongTien);
             }
+            const token = jwt.sign({ idDonhang }, secretKeyId, { expiresIn: '40m', algorithm: 'HS256' });
+
             delete req.session.cart;
-            res.redirect(`thank?token=${token}`);
+            res.redirect(`/thank?token=${token}`);
         }
         // thanh toan qua vi vnpay
         if (pay === 'VNPAY') {
             if (!fullName || !address || !SDT || !idUser) {
-                return res.render('index', { data: { title: 'Thanh toán', rows: dataCart, error: 'Thông tin không được bỏ trống', page: 'order/checkout' } });
+                return res.render('index', { data: { title: 'Thanh toán', rows: dataCart, error: 'Thông tin không được bỏ trống', page: 'pay/checkout' } });
             }
-            await orderModel.updateInfoUser(fullName, address, email, SDT, idUser)
-            const idDonhang = await orderModel.insertOrder(idUser, ghiChu, 2)
+            await checkoutModel.updateInfoUser(fullName, address, email, SDT, idUser)
+            const idDonhang = await checkoutModel.insertOrder(idUser, ghiChu, 2)
             let tongTien = 0;
             dataCart.forEach(sp => {
                 tongTien += (sp.gia * (100 - sp.khuyenMai) / 100) * sp.qty
@@ -75,8 +74,9 @@ const insertOrder = async (req, res) => {
                 let idSanPham = sp.idSanPham;
                 let giaTien = sp.gia - (sp.gia * (sp.khuyenMai / 100))
                 let soLuong = sp.qty;
-                await orderModel.insertDetailOrder(idDonhang, idSanPham, giaTien, soLuong, tongTien);
+                await checkoutModel.insertDetailOrder(idDonhang, idSanPham, giaTien, soLuong, tongTien);
             }
+            const token = jwt.sign({ idDonhang }, secretKeyId, { expiresIn: '40m', algorithm: 'HS256' });
             let ipAddr = req.headers['x-forwarded-for'] ||
                 req.connection.remoteAddress ||
                 req.socket.remoteAddress ||
@@ -85,12 +85,9 @@ const insertOrder = async (req, res) => {
             let tmnCode = 'ADIHHTSZ';
             let secretKey = 'JRJLFDPUSOIISVJJHKIPONMUNWYZVYTR'
             let vnpUrl = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'
-            let returnUrl = 'http://localhost:3000/cart'
-
-            let date = new Date();
-
+            let returnUrl = `http://localhost:8080/thank?token=${token}`
+           
             let createDate = moment().format('YYYYMMDDHHmmss');
-
             let currCode = 'VND';
             let vnp_Params = {};
             vnp_Params['vnp_Version'] = '2.1.0';
@@ -110,11 +107,11 @@ const insertOrder = async (req, res) => {
 
             vnp_Params = sortObject(vnp_Params);
 
-            var querystring = require('qs');
-            var signData = querystring.stringify(vnp_Params, { encode: false });
-            var crypto = require("crypto");
-            var hmac = crypto.createHmac("sha512", secretKey);
-            var signed = hmac.update(new Buffer.from(signData, 'utf-8')).digest("hex");
+            let querystring = require('qs');
+            let signData = querystring.stringify(vnp_Params, { encode: false });
+            let crypto = require("crypto");     
+            let hmac = crypto.createHmac("sha512", secretKey);
+            let signed = hmac.update(new Buffer.from(signData, 'utf-8')).digest("hex"); 
             vnp_Params['vnp_SecureHash'] = signed;
             vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
 
@@ -128,10 +125,10 @@ const insertOrder = async (req, res) => {
         //thanh toan truc tiep
         if (pay === 'pay') {
             if (!fullName || !address || !email || !SDT) {
-                return res.render('index', { data: { title: 'Thanh toán', rows: dataCart, error: 'Thông tin không được bỏ trống', page: 'order/checkout' } });
+                return res.render('index', { data: { title: 'Thanh toán', rows: dataCart, error: 'Thông tin không được bỏ trống', page: 'pay/checkout' } });
             }
-            const user = await orderModel.insertUserOder(fullName, address, email, SDT)
-            const idDonhang = await orderModel.insertOrder(user, ghiChu, 0)
+            const user = await checkoutModel.insertUserOder(fullName, address, email, SDT)
+            const idDonhang = await checkoutModel.insertOrder(user, ghiChu, 0)
             let tongTien = 0;
             dataCart.forEach(sp => {
                 tongTien += (sp.gia * (100 - sp.khuyenMai) / 100) * sp.qty
@@ -140,17 +137,18 @@ const insertOrder = async (req, res) => {
                 let idSanPham = sp.idSanPham;
                 let giaTien = sp.gia - (sp.gia * (sp.khuyenMai / 100))
                 let soLuong = sp.qty;
-                await orderModel.insertDetailOrder(idDonhang, idSanPham, giaTien, soLuong, tongTien);
+                await checkoutModel.insertDetailOrder(idDonhang, idSanPham, giaTien, soLuong, tongTien);
             }
+            const token = jwt.sign({ idDonhang }, secretKeyId, { expiresIn: '40m', algorithm: 'HS256' });
             delete req.session.cart;
-            res.redirect('/thank');
+            res.redirect(`thank?token=${token}`);
         }
         if (pay === 'VNPAY') {
             if (!fullName || !address || !email || !SDT) {
-                return res.render('index', { data: { title: 'Thanh toán', rows: dataCart, error: 'Thông tin không được bỏ trống', page: 'order/checkout' } });
+                return res.render('index', { data: { title: 'Thanh toán', rows: dataCart, error: 'Thông tin không được bỏ trống', page: 'pay/checkout' } });
             }
-            const user = await orderModel.insertUserOder(fullName, address, email, SDT)
-            const idDonhang = await orderModel.insertOrder(user, ghiChu, 0)
+            const user = await checkoutModel.insertUserOder(fullName, address, email, SDT)
+            const idDonhang = await checkoutModel.insertOrder(user, ghiChu, 2)
             let tongTien = 0;
             dataCart.forEach(sp => {
                 tongTien += (sp.gia * (100 - sp.khuyenMai) / 100) * sp.qty
@@ -159,8 +157,10 @@ const insertOrder = async (req, res) => {
                 let idSanPham = sp.idSanPham;
                 let giaTien = sp.gia - (sp.gia * (sp.khuyenMai / 100))
                 let soLuong = sp.qty;
-                await orderModel.insertDetailOrder(idDonhang, idSanPham, giaTien, soLuong, tongTien);
+                await checkoutModel.insertDetailOrder(idDonhang, idSanPham, giaTien, soLuong, tongTien);
             }
+            const token = jwt.sign({ idDonhang }, secretKeyId, { expiresIn: '40m', algorithm: 'HS256' });
+
             let ipAddr = req.headers['x-forwarded-for'] ||
                 req.connection.remoteAddress ||
                 req.socket.remoteAddress ||
@@ -169,7 +169,7 @@ const insertOrder = async (req, res) => {
             let tmnCode = 'ADIHHTSZ';
             let secretKey = 'JRJLFDPUSOIISVJJHKIPONMUNWYZVYTR'
             let vnpUrl = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'
-            let returnUrl = 'http://localhost:3000/cart'
+            let returnUrl = `http://localhost:8080/thank?token=${token}`
 
             let date = new Date();
 
@@ -208,26 +208,40 @@ const insertOrder = async (req, res) => {
         }
     }
 }
-const thank = (req, res) => {
+const thank = async (req, res) => {
     const token = req.query.token;
-    let {user, order} = {}
-    if(!token) {
-        return res.redirect('/')
+    if (!token) {
         console.log('loi')
+        return res.redirect('/')
     }
-    const secretKey = process.env.SERECT_KEY; 
-    jwt.verify(token, secretKey, (err, decoded) => {
-        if (err) {
-            return res.redirect('/')
-        }
-        // Đã giải mã thành công, giờ bạn có thể truy xuất thông tin đơn hàng và người dùng từ decoded
-        user = decoded.user;
-        order = decoded.order
-    });
-    res.render('index', { data: { title: 'Cảm ơn',user, order, page: 'order/thank' } });
+    const secretKeyId = process.env.SERECT_KEY;
+    try {
+        const decoded = await new Promise((resolve, reject) => {
+            jwt.verify(token, secretKeyId, (err, decoded) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(decoded);
+                }
+            });
+        });
+        // Giải mã thành công, giờ bạn có thể truy xuất thông tin đơn hàng và người dùng từ decoded
+        const idDonhang = decoded.idDonhang;
+        const getOrder = await checkoutModel.getOrder(idDonhang);
+        const getDetailOrder = await checkoutModel.getDetailOrder(idDonhang);
+        console.log(getOrder);
+        // console.log(getDetailOrder)
+
+        // Thêm phần render ở đây nếu cần
+        res.render('index', { data: { title: 'Cảm ơn', getOrder, getDetailOrder, page: 'pay/thank' } });
+
+    } catch (error) {
+        console.error(error);
+        return res.redirect('/');
+    }
 }
 export default {
-    checkout,
+    formCheckout,
     insertOrder,
     thank
     // momo

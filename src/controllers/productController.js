@@ -1,5 +1,6 @@
 import express from "express";
 import productModel from "../services/productModel";
+import { constants } from "pako";
 const cloudinary = require('cloudinary').v2;
 
 
@@ -85,20 +86,49 @@ const deleteProduct = async (req, res) => {
     cloudinary.uploader.destroy(detailProduct.fileName)
     await productModel.deleteProduct(id)
     res.redirect('/list-product')
+
 }
 //user
 const viewProduct = async (req, res) => {
-    let idDanhMuc = req.params.idDanhMuc
+    const idDanhMuc = req.params.idDanhMuc
     let tenDanhMuc = req.params.tenDanhMuc
-    let productPhone = await productModel.viewProduct(idDanhMuc)
-    return res.render("index", { data: { title: `Sản phẩm theo danh mục: ${tenDanhMuc}`, page: 'product/viewProduct', rows: productPhone, getUrl: req.url } })
+    let page = req.query.page || 1;
+
+    let currentPage = parseInt(page) 
+    const itemPage = 8;
+    const from = (page - 1) * itemPage;
+    const to = page * itemPage;
+    const countProduct = await productModel.countProduct(idDanhMuc)
+    const totalPages = Math.ceil(countProduct / itemPage);
+    let productPhone;
+    let sort = req.query.sort || '';
+    switch (sort) {
+        case 'noibat':
+            productPhone = await productModel.viewProductSortNoiBat(idDanhMuc, from, to);
+            break;
+        case 'decs':
+            productPhone = await productModel.viewProductGiamDan(idDanhMuc, from, to);
+            break;
+        case 'asc':
+            productPhone = await productModel.viewProductTangDan(idDanhMuc, from, to);
+            break;
+        case 'khuyenmai':
+            productPhone = await productModel.viewProductKhuyenMai(idDanhMuc, from, to);
+            break;
+        case 'banchay':
+            productPhone = await productModel.viewProductBanChay(idDanhMuc, from, to);
+            break;
+        default:
+            productPhone = await productModel.viewProduct(idDanhMuc, from, to)
+    }
+    return res.render("index", { data: { title: `Sản phẩm theo danh mục: ${tenDanhMuc}`, page: 'product/viewProduct', rows: productPhone, count: countProduct, total: totalPages, currentPage, getSort: sort, getUrl: req.url } })
 }
 const viewDetailProduct = async (req, res) => {
     let idSanPham = req.params.idSanPham
     let tenSanPham = req.params.tenSanPham
     let detailProduct = await productModel.detailProduct(idSanPham)
     let listImages = await productModel.getDetailImagesProduct(idSanPham)
-    return res.render("index", { data: { title: "Chi tiết sản phẩm", page: 'product/viewDetailProduct', rows: detailProduct, list:listImages, getUrl: req.url } })
+    return res.render("index", { data: { title: "Chi tiết sản phẩm", page: 'product/viewDetailProduct', rows: detailProduct, list: listImages, getUrl: req.url } })
 }
 const deleteImagesProduct = async (req, res) => {
     let idHinhAnhPhu = req.params.idHinhAnhPhu

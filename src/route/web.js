@@ -7,6 +7,8 @@ import productController from "../controllers/productController";
 import slideController from "../controllers/slideController";
 import cartController from "../controllers/cartController";
 import checkoutController from "../controllers/checkoutController";
+import orderController from "../controllers/orderController";
+import dasboardController from "../controllers/dasboardController";
 
 import { isLogin, allowedRoles } from "../middleware/auth";
 import uploadCloud from "../middleware/upload";
@@ -20,7 +22,7 @@ const initWebRoute = (app) =>{
     router.get('/',homeController.getHomePage);
 
 
-    router.get('/admin',userController.admin);
+    router.get('/admin',dasboardController.getDasboardPage);
     
    
     // userController
@@ -124,10 +126,17 @@ const initWebRoute = (app) =>{
 
 
     //checkoutController
-    router.get('/checkout',checkoutController.checkout);
+    router.get('/checkout',checkoutController.formCheckout);
     router.post('/insert-order',checkoutController.insertOrder);
     router.get('/thank',checkoutController.thank)
 
+    // orderController
+    router.get('/list-order-paid',isLogin,allowedRoles(['admin']),orderController.getOrderPaid);
+    router.get('/list-order-wait',isLogin,allowedRoles(['admin']),orderController.getOrderWait);
+    router.get('/list-order-cancel',isLogin,allowedRoles(['admin']),orderController.getOrderCancel);
+    router.get('/list-order-confirmed',isLogin,allowedRoles(['admin']),orderController.getOrderConfirmed);
+    router.get('/confirm-order/:trangThai/:idDonhang',isLogin,allowedRoles(['admin']),orderController.confirmOrder);
+    router.get('/detail-order/:idDonHang',isLogin,allowedRoles(['admin']),orderController.getDetailOrder);
 
     router.use((req, res, next) => {
         res.status(404).render('404');

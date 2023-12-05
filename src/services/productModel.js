@@ -46,11 +46,58 @@ const getIdDetailImagesProduct = async(idHinhAnhPhu) =>{
     return rows
 }
 //user
-const viewProduct = async (idDanhMuc) =>{
+
+const viewProduct = async (idDanhMuc,from,to) =>{
     const [rows] = await pool.execute
-    ('SELECT * FROM sanpham,danhmuc WHERE sanpham.idDanhMuc = danhmuc.idDanhMuc AND danhmuc.idDanhMuc = ? ORDER BY idSanPham DESC',[idDanhMuc])
+    ('SELECT * FROM sanpham sp, danhmuc dm WHERE sp.idDanhMuc = dm.idDanhMuc AND sp.idDanhMuc = ? order by sp.idSanPham DESC LIMIT ?, ?',[idDanhMuc,from,to])
     return rows
 }
+const countProduct = async (idDanhMuc) =>{
+    const[result] = await pool.execute('SELECT COUNT(*) AS total FROM sanpham sp, danhmuc dm WHERE sp.idDanhMuc = dm.idDanhMuc AND dm.idDanhMuc = ?',[idDanhMuc])
+    return result[0].total
+}
+const viewProductSortNoiBat = async (idDanhMuc,from,to) =>{
+    const [rows] = await pool.execute
+    ('SELECT * FROM sanpham sp, danhmuc dm WHERE sp.idDanhMuc = dm.idDanhMuc AND sp.noiBat = 1 AND sp.idDanhMuc = ? order by sp.idSanPham DESC LIMIT ?, ?',[idDanhMuc,from,to])
+    return rows
+}
+const viewProductGiamDan = async (idDanhMuc,from,to) =>{
+    const [rows] = await pool.execute
+    ('SELECT * FROM sanpham sp, danhmuc dm WHERE sp.idDanhMuc = dm.idDanhMuc AND sp.idDanhMuc = ? order by sp.gia DESC LIMIT ?, ?',[idDanhMuc,from,to])
+    return rows
+}
+const viewProductTangDan = async (idDanhMuc,from,to) =>{
+    const [rows] = await pool.execute
+    ('SELECT * FROM sanpham sp, danhmuc dm WHERE sp.idDanhMuc = dm.idDanhMuc AND sp.idDanhMuc = ? order by sp.gia ASC LIMIT ?, ?',[idDanhMuc,from,to])
+    return rows
+}
+const viewProductKhuyenMai = async (idDanhMuc,from,to) =>{
+    const [rows] = await pool.execute
+    ('SELECT * FROM sanpham sp, danhmuc dm WHERE sp.idDanhMuc = dm.idDanhMuc AND sp.idDanhMuc = ? order by sp.khuyenMai DESC LIMIT ?, ?',[idDanhMuc,from,to])
+    return rows
+}
+const viewProductBanChay = async (idDanhMuc,from,to) =>{
+    const [rows] = await pool.execute
+    ('SELECT *,sum(ct.soLuong) FROM donhang dh, chitietdonhang ct, sanpham sp, danhmuc dm WHERE dh.idDonHang = ct.idDonHang AND ct.idSanPham = sp.idSanPham AND sp.idDanhMuc = dm.idDanhMuc AND dm.idDanhMuc = ? AND  (dh.trangThai = 1 OR dh.trangThai = 2)GROUP BY sp.idSanPham ORDER BY sum(ct.soLuong) DESC LIMIT ?,?'
+   ,[idDanhMuc,from,to]);
+    return rows
+}
+const bannerProductBanChay = async () =>{
+    const [rows] = await pool.execute
+    ('SELECT *,sum(ct.soLuong) FROM donhang dh, chitietdonhang ct, sanpham sp, danhmuc dm WHERE dh.idDonHang = ct.idDonHang AND ct.idSanPham = sp.idSanPham AND sp.idDanhMuc = dm.idDanhMuc AND  (dh.trangThai = 1 OR dh.trangThai = 2)GROUP BY sp.idSanPham ORDER BY sum(ct.soLuong) DESC');
+    return rows
+}
+const bannerProductNoiBat = async () =>{
+    const [rows] = await pool.execute
+    ('SELECT * FROM sanpham sp, danhmuc dm WHERE sp.idDanhMuc = dm.idDanhMuc AND sp.noiBat = 1 order by sp.idSanPham DESC')
+    return rows
+}
+const bannerProductKhuyenMai = async () =>{
+    const [rows] = await pool.execute
+    ('SELECT * FROM sanpham sp, danhmuc dm WHERE sp.idDanhMuc = dm.idDanhMuc order by sp.khuyenMai DESC')
+    return rows
+}
+
 export default{
     getAllProduct,
     detailProduct,
@@ -62,5 +109,16 @@ export default{
     getDetailImagesProduct,
     deleteImagesProduct,
     getIdDetailImagesProduct,
-    viewProduct
+    viewProduct,
+    countProduct,
+    viewProductSortNoiBat,
+    viewProductGiamDan,
+    viewProductTangDan,
+    viewProductKhuyenMai,
+    viewProductBanChay,
+
+    bannerProductBanChay,
+    bannerProductNoiBat,
+    bannerProductKhuyenMai,
+
 }

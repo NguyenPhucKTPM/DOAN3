@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/slideBars.css">
     <link rel="stylesheet" href="/css/table.css">
-    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css"> -->
+    <link rel="stylesheet" href="/css/dasboard.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+
 
     <title><%= data.title %></title>
 </head>
@@ -27,7 +29,7 @@
                       <div class="col-md-12 mb-0 p-0 bg-dark-subtle  d-flex align-items-center" style="height: 50px;">
                         <a href="/">Trang chủ</a> 
                         <span class="mx-2 mb-0">/</span> 
-                        <strong class="text-black"> <%= data.title %></strong>
+                        <strong class="text-black"> <%= data.title != 'admin' ? data.title : '' %></strong>
                       </div>
                     </div>
                   </div>
@@ -37,7 +39,9 @@
             <div class="mb-4">
                 <% if(data.page) { %>
                     <%- include(data.page) %>
-                <%}%>
+                <% }else { %>
+                  <%- include('dasboard/index') %>
+                <%}%> 
             </div>
         </div>
     </div>
@@ -51,6 +55,7 @@
     <script src="/js/datatable.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
 </html>
 </html>

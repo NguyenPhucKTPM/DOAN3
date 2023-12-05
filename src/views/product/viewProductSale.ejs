@@ -1,0 +1,37 @@
+<div class="container mt-5 p-0">
+    <div class="row text-center"><h4>Sản phẩm hạ giá</h4></div>
+    <swiper-container class="mySwiper swiper-container-centered" style="--swiper-navigation-color: #f1bc31; --swiper-pagination-color: #f1bc31;--swiper-navigation-top-offset: 36%"
+     slides-per-view="3" centered-slides="true" space-between="30" pagination="true"
+    pagination-type="fraction" navigation="true" autoplay-delay="2000" autoplay-disable-on-interaction="false"  loop="true">
+    <% for (let i=0;i<data.listProductSale.length;i++) { %>
+    <swiper-slide>
+        <div class="product d-flex flex-column">
+            <a href="/detail-phone/<%= data.listProductSale[i].idSanPham %>" class="img-prod"><img class="img-fluid bg-transparent" src="<%= data.listProductSale[i].hinhAnh %>" alt="Colorlib Template">
+                <% if(data.listProductSale[i].khuyenMai >= 1) { %>
+                    <span class="status"><%= data.listProductSale[i].khuyenMai %> % OFF</span>
+                <% } %>
+                <div class="overlay"></div>
+            </a>
+            <div class="text py-3 pb-4 px-3">
+                <h3><a href="/detail-phone/<%= data.listProductSale[i].idSanPham %>"><%= data.listProductSale[i].tenSanPham %></a></h3>
+                  <div class="pricing">
+                    <%
+                        let giaSale = data.listProductSale[i].gia - (data.listProductSale[i].gia * (data.listProductSale[i].khuyenMai / 100))
+                    %>
+                    <p class="price">
+                        <% if(data.listProductSale[i].khuyenMai >= 1) { %>
+                            <span class="mr-2 price-dc"><%= data.listProductSale[i].gia.toLocaleString('vi-VN') + '₫' %></span>
+                        <% } %>
+                        <span class="price-sale"><%= giaSale.toLocaleString('vi-VN') + '₫' %></span>
+                    </p>
+                </div>
+                <p class="bottom-area d-flex px-3">
+                    <a href="/add-cart/<%= data.listProductSale[i].idSanPham %>" class="add-to-cart text-center py-2 mr-1"><span>Thêm giỏ hàng<i class="ion-ios-add ml-1"></i></span></a>
+                    <a href="#" class="buy-now text-center py-2">Mua Ngay<span><i class="ion-ios-cart ml-1"></i></span></a>
+                </p>
+            </div>
+        </div>
+    </swiper-slide>
+    <% } %>
+  </swiper-container>
+</div>

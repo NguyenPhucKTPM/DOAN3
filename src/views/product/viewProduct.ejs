@@ -1,4 +1,32 @@
 <div class="container">
+  <div class="row align">
+    <div class="col-md-12 mb-5">
+      <div class="float-md-left"><h2 class="text-black h5">Sản phẩm hiện có: (<%= data.count %>)</h2></div>
+      <div class="d-flex">
+        <div class="dropdown mr-1 ml-md-auto">
+          <!-- <button type="button" class="btn btn-white btn-sm dropdown-toggle px-4" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Latest
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
+            <a class="dropdown-item" href="#">Men</a>
+            <a class="dropdown-item" href="#">Women</a>
+            <a class="dropdown-item" href="#">Children</a>
+          </div> -->
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-white btn-sm dropdown-toggle px-4" id="dropdownMenuReference" data-toggle="dropdown">Lọc sản phẩm theo: </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
+            <a class="dropdown-item" href="?page=1&sort=noibat">Sản phẩm nổi bật nhất</a>
+            <a class="dropdown-item" href="?page=1&sort=banchay">Bán chạy nhất</a>
+            <a class="dropdown-item" href="?page=1&sort=khuyenmai">Khuyến mãi cao nhất</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="?page=1&sort=asc">Giá thấp đến cao</a>
+            <a class="dropdown-item" href="?page=1&sort=decs">Giá cao đến thấp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="row">
     <% for(let i=0;i<data.rows.length;i++) { %>
     <div class="col-sm-12 col-md-6 col-lg-3 ftco-animate d-flex fadeInUp ftco-animated">
@@ -32,18 +60,25 @@
     <% } %>
   </div>
 </div>
-<div class="row mt-5 mb-5">
+<div class="container">
+  <div class="row mt-5 mb-5">
     <div class="col text-center">
       <div class="block-27">
         <ul>
-          <li><a href="#">&lt;</a></li>
-          <li class="active"><span>1</span></li>
-          <li><a href="#">2</a></li>
-          <li><a href="#">3</a></li>
-          <li><a href="#">4</a></li>
-          <li><a href="#">5</a></li>
-          <li><a href="#">&gt;</a></li>
+          <li>
+            <a href="?page=<%= (data.currentPage > 1) ? (data.currentPage - 1) : 1 %><%=data.getSort ? '&sort='+data.getSort : ''%>">&lt;</a>
+          </li>
+        
+          <% for(let i = 1; i <= data.total; i++){ %>
+            <li class="<%= data.currentPage == i ? 'active' : '' %>">
+              <a href="?page=<%= i %><%=data.getSort ? '&sort='+data.getSort : ''%>"><%= i %></a>
+            </li>
+          <% } %>
+          <li>
+            <a href="?page=<%= (data.currentPage < data.total) ? (data.currentPage + 1) : data.currentPage %><%=data.getSort ? '&sort='+data.getSort : ''%>">&gt;</a>
+          </li>
         </ul>
       </div>
     </div>
   </div>
+</div>

@@ -1,0 +1,121 @@
+<style>
+  #table_detail {
+    overflow-x: auto;
+  }
+</style>
+<div class="mb-9">
+  <h2 class="mb-1">Mã đơn: <span>#<%= data.order.idDonHang %></span></h2>
+  <div class="d-flex flex-wrap flex-between-center mb-4 gap-2">
+    <p class="text-800 lh-sm mb-0">
+      Ngày đặt: <%=(new Date(data.order.ngayDat)).toLocaleString('vi-VN', {
+      dateStyle: 'short', timeStyle: 'medium' }) %>
+    </p>
+  </div>
+  <div class="g-5 gy-7 row">
+    <div class="col-xxl-9 col-xl-8 col-12">
+      <div class="mb-6">
+        <div>
+          <div class="border-y">
+            <div class="scrollbar ms-n1 ps-1">
+              <table id="table_detail" class="phoenix-table fs-9 table">
+                <thead>
+                  <tr>
+                    <th class=""></th>
+                    <th>STT</th>
+                    <th class="sort" style="min-width: 380px">Tên sản phẩm</th>
+                    <th class="ps-4 text-center sort" style="width: 150px">
+                      Giá
+                    </th>
+                    <th class="ps-4 text-end sort" style="width: 200px">
+                      Số lượng
+                    </th>
+                    <th class="ps-4 text-center sort asc" style="width: 250px">
+                      Tổng
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <% let i = 0; %>
+                  <% let tongTien = 0; %> <% data.detailOrder.forEach((sp) =>
+                  { %> <% tongTien = sp.tongTien %>
+                    %> <% i += 1 %>
+                  <tr>
+                    <td class="py-2">
+                      <div class="rounded-2 border d-inline-block">
+                        <img
+                          src="<%= sp.hinhAnh %>"
+                          alt=""
+                          width="53"
+                        />
+                      </div>
+                    </td>
+                    <td class="text-center"><%= i %></td>
+                    <td class="">
+                      <a
+                        class="fw-semi-bold line-clamp-2"
+                        href="/detail-product/<%= sp.idSanPham %>"
+                        ><%= sp.tenSanPham %></a
+                      >
+                    </td>
+                    <td class="text-900 fw-semi-bold text-end ps-4">
+                        <%= sp.giaTien.toLocaleString('vi-VN') +  '₫' %>
+                    </td>
+                    <td class="text-center ps-4 text-700"><%= sp.soLuong %></td>
+                    <td class="fw-bold text-1000 text-center ps-4">
+                        <%= (sp.giaTien*sp.soLuong).toLocaleString('vi-VN') +  '₫' %> 
+                    </td>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+            <div class="d-flex flex-between-center py-3">
+              <p class="text-1100 fw-semi-bold lh-sm mb-0">Tổng giá :</p>
+              <p class="text-1100 fw-bold lh-sm mb-0"><%= tongTien.toLocaleString('vi-VN') + '₫' %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-3 col-xl-4 col-12">
+      <div class="mb-4 card">
+        <div class="card-body">
+          <h3 class="mb-4 card-title">Thông tin người mua</h3>
+          <p class="text-900 fw-semi-bold">Họ tên: <%= data.order.fullName %></p>
+          <p class="text-900 fw-semi-bold">Số điện thoại: <%= data.order.SDT %></p>
+          <p class="text-900 fw-semi-bold">Địa chỉ email: <%= data.order.email %></p>
+          <p class="text-900 fw-semi-bold">Địa chỉ nhận hàng: <%= data.order.address %></p>
+          <p class="text-900 fw-semi-bold">Ghi chú: <%= data.order.ghiChu %></p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <h3 class="mb-4 card-title">Tính tổng</h3>
+          <div class="border-bottom border-dashed mb-4">
+            <div>
+                <% data.detailOrder.forEach((sp) =>
+                { %>
+              <div class="d-flex justify-content-between">
+                <p class="text-900 fw-semi-bold">Giá sản phẩm :</p>
+                <p class="text-1100 fw-semi-bold"><%= (sp.giaTien*sp.soLuong).toLocaleString('vi-VN') +  '₫' %> </p>
+              </div>
+              <% }); %>
+              <div class="d-flex justify-content-between">
+                <p class="text-900 fw-semi-bold">Mã khuyến mãi :</p>
+                <p class="text-danger fw-semi-bold">-0₫</p>
+              </div>
+              <div class="d-flex justify-content-between">
+                <p class="text-900 fw-semi-bold">Phí vận chuyển :</p>
+                <p class="text-1100 fw-semi-bold">0₫</p>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between">
+            <h4 class="mb-0">Tổng cộng :</h4>
+            <h4 class="mb-"><%= tongTien.toLocaleString('vi-VN') + '₫' %></h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

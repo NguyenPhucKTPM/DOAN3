@@ -24,6 +24,15 @@
             },
             // "scrollX": true
         });
+        $('#table_detail').DataTable({
+            searching: false, // Tắt nút tìm kiếm
+            paging: false, // Tắt phân trang
+            info: false,
+            language: {
+                // info: "Bản ghi từ _START_ đến _END_ Tổng công _TOTAL_ bản ghi",
+            },
+            // Các tùy chọn khác cho DataTable mới ở đây
+        });
        
       
     });
