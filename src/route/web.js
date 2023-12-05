@@ -6,7 +6,7 @@ import categoryController from "../controllers/categoryController";
 import productController from "../controllers/productController";
 import slideController from "../controllers/slideController";
 import cartController from "../controllers/cartController";
-import orderController from "../controllers/orderController";
+import checkoutController from "../controllers/checkoutController";
 
 import { isLogin, allowedRoles } from "../middleware/auth";
 import uploadCloud from "../middleware/upload";
@@ -115,19 +115,18 @@ const initWebRoute = (app) =>{
 
 
     //cartControler
-    router.get('/add-cart/:idSanPham',cartController.store)
-    router.get('/cart',cartController.cart)
-    router.get('/clear',cartController.clearAll)
-    router.get('/clear-product/:idSanPham',cartController.clearProduct)
-    router.post('/update-cart',cartController.update)
+    router.get('/add-cart/:idSanPham',cartController.store);
+    router.get('/cart',cartController.cart);
+    router.get('/clear',cartController.clearAll);
+    router.get('/clear-product/:idSanPham',cartController.clearProduct);
+    router.post('/update-cart',cartController.update);
 
 
 
-    //orderController
-    router.get('/checkout',orderController.checkout)
-    router.post('/insert-order',orderController.insertOrder)
-
-
+    //checkoutController
+    router.get('/checkout',checkoutController.checkout);
+    router.post('/insert-order',checkoutController.insertOrder);
+    router.get('/thank',checkoutController.thank)
 
 
     router.use((req, res, next) => {
