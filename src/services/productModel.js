@@ -16,9 +16,9 @@ const detailProduct1 = async (idSanPham) => {
     ('SELECT * FROM sanpham,danhmuc WHERE sanpham.idDanhMuc = danhmuc.idDanhMuc AND sanpham.idSanPham = ?',[idSanPham])
     return rows
 }
-const insertProduct = async (tenSanPham,idDanhMuc,gia,khuyenMai,hinhAnh,noiBat,moTa,fileName) => {
-    const[result] = await pool.execute('INSERT INTO sanpham (tenSanPham,idDanhMuc,gia,khuyenMai,hinhAnh,noiBat,moTa,fileName) VALUES (?,?,?,?,?,?,?,?)'
-    ,[tenSanPham,idDanhMuc,gia,khuyenMai,hinhAnh,noiBat,moTa,fileName]);
+const insertProduct = async (tenSanPham,idDanhMuc,gia,khuyenMai,hinhAnh,noiBat,moTa,fileName,thongSoKyThuat) => {
+    const[result] = await pool.execute('INSERT INTO sanpham (tenSanPham,idDanhMuc,gia,khuyenMai,hinhAnh,noiBat,moTa,fileName,thongSoKyThuat) VALUES (?,?,?,?,?,?,?,?,?)'
+    ,[tenSanPham,idDanhMuc,gia,khuyenMai,hinhAnh,noiBat,moTa,fileName,thongSoKyThuat]);
     const idSanPham = result.insertId;
     // console.log('idSanPham',idSanPham);
     return idSanPham
@@ -26,9 +26,9 @@ const insertProduct = async (tenSanPham,idDanhMuc,gia,khuyenMai,hinhAnh,noiBat,m
 const insertImagesProduct = async (idSanPham,tenHinh,hinhAnhPhu) =>{
  await pool.execute('INSERT INTO hinhsanpham (idSanpham,tenHinh,hinhAnhPhu)  VALUES (?,?,?)',[idSanPham,tenHinh,hinhAnhPhu])
 }
-const updateProduct = async (tenSanPham,idDanhMuc,gia,khuyenMai,hinhAnh,noiBat,moTa,fileName,idSanPham) => {
-    await pool.execute('UPDATE sanpham SET tenSanPham = ?,idDanhMuc = ?,gia = ?,khuyenMai = ?,hinhAnh = ?,noiBat = ?,moTa = ?,fileName = ? WHERE idSanPham = ?'
-    ,[tenSanPham,idDanhMuc,gia,khuyenMai,hinhAnh,noiBat,moTa,fileName,idSanPham]);
+const updateProduct = async (tenSanPham,idDanhMuc,gia,khuyenMai,hinhAnh,noiBat,moTa,fileName,thongSoKyThuat,idSanPham) => {
+    await pool.execute('UPDATE sanpham SET tenSanPham = ?,idDanhMuc = ?,gia = ?,khuyenMai = ?,hinhAnh = ?,noiBat = ?,moTa = ?,fileName = ?,thongSoKyThuat=? WHERE idSanPham = ?'
+    ,[tenSanPham,idDanhMuc,gia,khuyenMai,hinhAnh,noiBat,moTa,fileName,thongSoKyThuat,idSanPham]);
 }
 const deleteProduct = async (idSanPham) => {
     await pool.execute('DELETE FROM hinhsanpham WHERE idSanPham = ?',[idSanPham]); 
@@ -84,17 +84,22 @@ const viewProductBanChay = async (idDanhMuc,from,to) =>{
 }
 const bannerProductBanChay = async () =>{
     const [rows] = await pool.execute
-    ('SELECT *,sum(ct.soLuong) FROM donhang dh, chitietdonhang ct, sanpham sp, danhmuc dm WHERE dh.idDonHang = ct.idDonHang AND ct.idSanPham = sp.idSanPham AND sp.idDanhMuc = dm.idDanhMuc AND  (dh.trangThai = 1 OR dh.trangThai = 2)GROUP BY sp.idSanPham ORDER BY sum(ct.soLuong) DESC');
+    ('SELECT *,sum(ct.soLuong) FROM donhang dh, chitietdonhang ct, sanpham sp, danhmuc dm WHERE dh.idDonHang = ct.idDonHang AND ct.idSanPham = sp.idSanPham AND sp.idDanhMuc = dm.idDanhMuc AND  (dh.trangThai = 1 OR dh.trangThai = 2)GROUP BY sp.idSanPham ORDER BY sum(ct.soLuong) DESC LIMIT 6');
     return rows
 }
 const bannerProductNoiBat = async () =>{
     const [rows] = await pool.execute
-    ('SELECT * FROM sanpham sp, danhmuc dm WHERE sp.idDanhMuc = dm.idDanhMuc AND sp.noiBat = 1 order by sp.idSanPham DESC')
+    ('SELECT * FROM sanpham sp, danhmuc dm WHERE sp.idDanhMuc = dm.idDanhMuc AND sp.noiBat = 1 order by sp.idSanPham DESC LIMIT 6')
     return rows
 }
 const bannerProductKhuyenMai = async () =>{
     const [rows] = await pool.execute
-    ('SELECT * FROM sanpham sp, danhmuc dm WHERE sp.idDanhMuc = dm.idDanhMuc order by sp.khuyenMai DESC')
+    ('SELECT * FROM sanpham sp, danhmuc dm WHERE sp.idDanhMuc = dm.idDanhMuc order by sp.khuyenMai DESC LIMIT 6')
+    return rows
+}
+const searchProduct = async (tenSanPham) =>{
+    const [rows] = await pool.execute
+    ('SELECT sp.tenSanPham, sp.gia,sp.khuyenMai,sp.idSanPham,sp.hinhAnh FROM sanpham sp  WHERE MATCH(tenSanPham) against(? IN BOOLEAN mode)',[tenSanPham])
     return rows
 }
 
@@ -120,5 +125,7 @@ export default{
     bannerProductBanChay,
     bannerProductNoiBat,
     bannerProductKhuyenMai,
+
+    searchProduct,
 
 }

@@ -34,6 +34,10 @@ const checkUserName = async(userName) =>{
     const [rows] = await pool.execute('SELECT * FROM users,groups WHERE users.groupID = groups.id AND userName = ?',[userName])
     return rows
 }
+const checkNumberPhoneUser = async(SDT)=>{
+    const [rows] = await pool.execute('SELECT * FROM users,groups WHERE users.groupID = groups.id AND SDT = ?',[SDT])
+    return rows
+}
 const getSessionUserName = async (userName) =>{
     const [rows] = await pool.execute
     ('SELECT * FROM users,groups WHERE users.groupID = groups.id AND userName=?',[userName])
@@ -58,5 +62,6 @@ export default {
     updateUser,
     deleteUser,
     updatePassword,
-    checkUserName
+    checkUserName,
+    checkNumberPhoneUser
 }

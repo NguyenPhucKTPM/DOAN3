@@ -12,20 +12,21 @@ const getAllProduct = async (req, res) => {
 const detailProduct = async (req, res) => {
     let id = req.params.idSanPham
     let detailProduct = await productModel.detailProduct(id)
-    return res.render('admin', { data: { title: 'Chi tiết sản phẩm', page: 'product/detailProduct', rows: detailProduct, getUrl: req.url } });
+    let listImages = await productModel.getDetailImagesProduct(id)
+    return res.render('admin', { data: { title: 'Chi tiết sản phẩm', page: 'product/detailProduct', rows: detailProduct, list: listImages, getUrl: req.url } });
 }
 const createProduct = (req, res) => {
     return res.render('admin', { data: { title: 'Thêm sản phẩm', page: 'product/createProduct', getUrl: req.url } });
 }
 const insertProduct = async (req, res) => {
-    let { tenSanPham, idDanhMuc, khuyenMai, noiBat, moTa } = req.body;
+    let { tenSanPham, idDanhMuc, khuyenMai, noiBat, moTa, thongSoKyThuat } = req.body;
     const hinhAnh = req.files['hinhAnh'];
     let gia = req.body.gia.replace(/\./g, '');
     if (!tenSanPham || !idDanhMuc || !gia || !noiBat || !moTa || !hinhAnh) {
         if (hinhAnh) cloudinary.uploader.destroy(hinhAnh[0].filename)
         return res.render("admin", { data: { title: "Thêm thất bại", page: 'product/createProduct', error: "Thông tin sản phẩm không được bỏ trống", getUrl: req.url } })
     }
-    const insertProduct = await productModel.insertProduct(tenSanPham, idDanhMuc, gia, khuyenMai, hinhAnh[0].path, noiBat, moTa, hinhAnh[0].filename)
+    const insertProduct = await productModel.insertProduct(tenSanPham, idDanhMuc, gia, khuyenMai, hinhAnh[0].path, noiBat, moTa, hinhAnh[0].filename, thongSoKyThuat)
     //them hinh phu
     const hinhAnhPhu = req.files['hinhAnhPhu'];
     if (hinhAnhPhu && Array.isArray(hinhAnhPhu)) {
@@ -44,13 +45,13 @@ const editProduct = async (req, res) => {
     return res.render('admin', { data: { title: 'Cập nhật sản phẩm', page: 'product/updateProduct', rows: detailProduct, list: listImages, getUrl: req.url } });
 }
 const updateProduct = async (req, res) => {
-    let { tenSanPham, idDanhMuc, khuyenMai, hinhAnhCu, noiBat, moTa, fileName, idSanPham } = req.body;
+    let { tenSanPham, idDanhMuc, khuyenMai, hinhAnhCu, noiBat, moTa, fileName, idSanPham, thongSoKyThuat } = req.body;
     let gia = req.body.gia.replace(/\./g, '');
     // truong hop co file moi dc up lien
     if (req.files['hinhAnh']) {
         const hinhAnh = req.files['hinhAnh'];
         cloudinary.uploader.destroy(fileName)
-        await productModel.updateProduct(tenSanPham, idDanhMuc, gia, khuyenMai, hinhAnh[0].path, noiBat, moTa, hinhAnh[0].filename, idSanPham)
+        await productModel.updateProduct(tenSanPham, idDanhMuc, gia, khuyenMai, hinhAnh[0].path, noiBat, moTa, hinhAnh[0].filename, thongSoKyThuat, idSanPham)
         if (req.files['hinhAnhPhu']) {
             const hinhAnhPhu = req.files['hinhAnhPhu'];
             for (const file of hinhAnhPhu) {
@@ -72,7 +73,7 @@ const updateProduct = async (req, res) => {
     }
     //nguoc lai ko co file up len
     if (!req.files['hinhAnh'] && !req.files['hinhAnhPhu']) {
-        await productModel.updateProduct(tenSanPham, idDanhMuc, gia, khuyenMai, hinhAnhCu, noiBat, moTa, fileName, idSanPham)
+        await productModel.updateProduct(tenSanPham, idDanhMuc, gia, khuyenMai, hinhAnhCu, noiBat, moTa, fileName, thongSoKyThuat, idSanPham)
         res.redirect('/list-product')
     }
 }
@@ -94,7 +95,7 @@ const viewProduct = async (req, res) => {
     let tenDanhMuc = req.params.tenDanhMuc
     let page = req.query.page || 1;
 
-    let currentPage = parseInt(page) 
+    let currentPage = parseInt(page)
     const itemPage = 8;
     const from = (page - 1) * itemPage;
     const to = page * itemPage;
@@ -139,6 +140,53 @@ const deleteImagesProduct = async (req, res) => {
     res.redirect(`/edit-product/${idSanPham}`)
 }
 
+const searchProduct = async (req, res) => {
+    try {
+        let tenSanPham = req.body.tenSanPham;
+        let txtError = '';
+        console.log(tenSanPham)
+        if (tenSanPham === '') {
+            console.log('loi')
+            // txtError = 'Vui lòng nhập tên sản phẩm';
+            return res.render("index", {
+                data: {
+                    title: "Sản phẩm tìm được",
+                    page: 'product/searchProduct',
+                    error: 'Vui lòng nhập tên sản phẩm',
+                    getUrl: req.url
+                }
+            });
+        } else {
+            const array = tenSanPham.split(" ");
+            let str = "";
+            array.forEach(element => {
+                if (element.trim() !== "") {
+                    str += "+" + element;
+                }
+            });
+
+            const searchResult = await productModel.searchProduct(str);
+            const count = searchResult.length;
+
+            if (count <= 0) {
+                txtError = 'Không tìm thấy từ khóa: ' + tenSanPham;
+            } else {
+                txtError = 'Tìm được với từ khóa: ' + tenSanPham;
+            }
+            return res.render("index", {
+                data: {
+                    title: "Sản phẩm tìm được",
+                    page: 'product/searchProduct',
+                    rows: searchResult, 
+                    error: txtError,
+                    getUrl: req.url
+                }
+            });
+        }
+    } catch (error) {
+        res.status(500).send('Internal Server Error');
+    }
+};
 export default {
     getAllProduct,
     detailProduct,
@@ -149,5 +197,6 @@ export default {
     deleteProduct,
     viewProduct,
     viewDetailProduct,
-    deleteImagesProduct
+    deleteImagesProduct,
+    searchProduct
 }

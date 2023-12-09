@@ -66,6 +66,11 @@ const update = (req, res) => {
             if (match) {
               const id = match[1];
               const qty = quantities[key];
+              //kiem tra nếu số lượng nhỏ hơn hoặc bnagwf 0 hoặc là ko có thì sẽ xóa giỏ hàng
+              if(qty <= 0 || !qty){
+                delete req.session.cart;
+                return res.redirect('/cart');
+              }
             //   tim id tuong ung de cap nhat so luong
               let product = req.session.cart.find(item => item.idSanPham == id);
               product.qty = qty

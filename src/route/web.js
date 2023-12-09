@@ -43,6 +43,11 @@ const initWebRoute = (app) =>{
     router.get('/change-pass',isLogin,userController.editPass);
     router.post('/update-pass',isLogin,userController.updatePass);
 
+    router.get('/forgot',userController.numberPhone);
+    router.post('/confirm-numberphone',userController.checkPhone);
+
+    router.get('/forgot-password',userController.forgotPassword);
+    router.post('/forgot-update-pass',userController.updatePasswordForgot);
 
     // -Admin
     router.get('/change-pass-admin',isLogin,allowedRoles(["admin"]),userController.editPassAdmin);
@@ -102,6 +107,7 @@ const initWebRoute = (app) =>{
     //user
     router.get('/phone/:tenDanhMuc/:idDanhMuc',productController.viewProduct);
     router.get('/detail-phone/:idSanPham',productController.viewDetailProduct);
+    router.post('/search-product',productController.searchProduct)
 
     //slideController
     //admin

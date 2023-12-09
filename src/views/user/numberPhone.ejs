@@ -1,0 +1,44 @@
+<div class="container mb-3">
+    <div class="d-flex justify-content-center">
+      <div class="col-md-7 col-lg-6">
+        <form action="/confirm-numberphone" method="post">
+          <div class="row">
+            <!-- confirm sms -->
+            <div class="input-group col-lg-12 mb-4">
+              <div class="input-group-prepend">
+                <span
+                  class="input-group-text bg-white px-4 border-md border-right-0"
+                >
+                  <i class="fa fa-phone-square text-muted"></i>
+                </span>
+              </div>
+              <input
+                id="numberPhone"
+                type="text"
+                name="numberPhone"
+                placeholder="Nhập số điện thoại"
+                class="form-control bg-white border-left-0 border-md"
+              />
+            </div>
+  
+            <!-- Notification -->
+            <div class="form-group col-lg-12 mx-auto mb-3">
+              <span class="text-danger"><%= data.error ? data.error : '' %></span>
+              <span class="text-primary"><%= data.noti ? data.noti : '' %></span>
+            </div>
+  
+            <!-- Submit Button -->
+            <div class="form-group col-lg-12 mx-auto mb-0">
+              <button
+                type="submit"
+                class="form-control btn btn-primary rounded submit px-3 fs-5"
+              >
+                Xác nhận
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
